@@ -1,0 +1,11 @@
+{
+  "name": "Debbie Fashion",
+  "description": "Debbie Fashion is a premium luxury fashion marketplace featuring lifestyle-curated collections, interactive outfit building, and Gemini AI-powered style recommendations.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
