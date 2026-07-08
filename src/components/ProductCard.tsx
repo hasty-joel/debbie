@@ -121,32 +121,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Product Content Specifications */}
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-2 bg-zinc-50/50 dark:bg-zinc-950/50 transition-colors">
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-1.5 sm:space-y-2 bg-zinc-50/50 dark:bg-zinc-950/50 transition-colors">
         
-        <div className="space-y-1">
+        <div className="space-y-0.5 sm:space-y-1">
           {/* Brand & Stars */}
           <div className="flex items-center justify-between">
-            <span className="text-xxs font-bold tracking-widest uppercase text-luxury-gold dark:text-luxury-gold/90">{product.brand}</span>
+            <span className="text-[9px] sm:text-xxs font-bold tracking-widest uppercase text-luxury-gold dark:text-luxury-gold/90">{product.brand}</span>
             <div className="flex items-center space-x-1">
-              <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-              <span className="text-xxs font-mono font-bold text-zinc-650 dark:text-zinc-300">{product.rating}</span>
+              <Star className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-amber-400 text-amber-400" />
+              <span className="text-[9px] sm:text-xxs font-mono font-bold text-zinc-600 dark:text-zinc-300">{product.rating}</span>
             </div>
           </div>
 
           {/* Title */}
-          <h3 className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white uppercase tracking-tight line-clamp-1 group-hover:text-luxury-gold transition-colors duration-300">
+          <h3 className="text-[11px] sm:text-xs md:text-sm font-semibold text-zinc-900 dark:text-white uppercase tracking-tight line-clamp-1 group-hover:text-luxury-gold transition-colors duration-300">
             {product.title}
           </h3>
         </div>
 
         {/* Pricing tag & added feedback status */}
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-baseline space-x-2">
-            <span className="font-mono text-xs sm:text-sm font-bold text-zinc-950 dark:text-white">
+        <div className="flex items-center justify-between pt-0.5 sm:pt-1">
+          <div className="flex items-baseline space-x-1 sm:space-x-2">
+            <span className="font-mono text-[11px] sm:text-xs md:text-sm font-bold text-zinc-950 dark:text-white">
               UGX {product.price.toLocaleString()}
             </span>
             {product.original_price && (
-              <span className="font-mono text-xxs text-zinc-400 line-through">
+              <span className="font-mono text-[9px] sm:text-xxs text-zinc-400 line-through">
                 UGX {product.original_price.toLocaleString()}
               </span>
             )}
@@ -154,9 +154,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           
           <div className="flex items-center">
             {addedAnimation ? (
-              <span className="text-xxs text-emerald-500 font-bold tracking-wide animate-bounce font-mono">ADDED!</span>
+              <span className="text-[9px] sm:text-xxs text-emerald-500 font-bold tracking-wide animate-bounce font-mono">ADDED!</span>
             ) : (
-              <span className="text-xxs text-zinc-400 font-mono tracking-wider group-hover:text-luxury-gold transition-colors duration-300">
+              <span className="text-[9px] sm:text-xxs text-zinc-400 font-mono tracking-wider group-hover:text-luxury-gold transition-colors duration-300">
                 View Spec
               </span>
             )}

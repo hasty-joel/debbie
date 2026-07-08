@@ -291,29 +291,29 @@ export const Home: React.FC<HomeProps> = ({ previewConfig }) => {
           const finalTrending = displayProducts.slice(0, 4);
 
           return (
-            <section key="sect-trending" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 pt-8" id="sect_trending">
-              <div className="flex items-end justify-between border-b border-zinc-200/50 dark:border-zinc-800/50 pb-4">
-                <div className="space-y-1">
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 uppercase">
+            <section key="sect-trending" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6 md:space-y-8 pt-4 sm:pt-6 md:pt-8" id="sect_trending">
+              <div className="flex items-end justify-between border-b border-zinc-200/50 dark:border-zinc-800/50 pb-3 sm:pb-4">
+                <div className="space-y-0.5 sm:space-y-1">
+                  <h2 className="font-display text-lg sm:text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 uppercase">
                     {activeConfig.trending.title || "Trending This Week"}
                   </h2>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-[10px] sm:text-xs text-zinc-500">
                     {activeConfig.trending.subtitle || "The absolute highpoints of our recent lookbook curation."}
                   </p>
                 </div>
                 <button 
                   onClick={() => setCurrentView('catalog')}
-                  className="flex items-center space-x-1 text-xxs font-bold tracking-widest text-luxury-gold hover:text-zinc-950 dark:hover:text-white uppercase transition-colors bg-transparent border-none cursor-pointer"
+                  className="flex items-center space-x-1 text-[10px] sm:text-xxs font-bold tracking-widest text-luxury-gold hover:text-zinc-950 dark:hover:text-white uppercase transition-colors bg-transparent border-none cursor-pointer"
                 >
                   <span>Explore catalogue</span>
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-4.5 w-4.5" />
                 </button>
               </div>
 
               {finalTrending.length === 0 ? (
                 <p className="py-12 text-center text-xs text-zinc-400 italic">No trending products matching criteria.</p>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                   {finalTrending.map((p) => (
                     <ProductCard key={p.id} product={p} />
                   ))}

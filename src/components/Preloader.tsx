@@ -286,14 +286,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       </div>
 
       {/* TOP HEADER: Luxurious Atelier Coordinates */}
-      <div className="w-full max-w-7xl px-8 flex justify-between items-center text-zinc-500 font-mono text-xxs tracking-widest z-20">
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 0.6, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          DEBBIE ATELIER COUTURE // SYSTEM v3.0
-        </motion.div>
+      <div className="w-full max-w-7xl px-8 flex justify-end items-center text-zinc-500 font-mono text-xxs tracking-widest z-20">
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 0.6, y: 0 }}
@@ -301,7 +294,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           className="flex items-center space-x-1.5"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-luxury-gold animate-ping" />
-          <span>EST. 2026 // ESTRELLA</span>
         </motion.div>
       </div>
 

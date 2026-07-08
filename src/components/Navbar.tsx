@@ -208,17 +208,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenWishlist }) =>
                   })}
                 </div>
               </div>
- 
-              {/* Sidebar Footer Metadata & Brand coordinates */}
-              <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
-                <div className="flex items-center space-x-2 text-xxs font-mono text-zinc-500 tracking-wider">
-                  <Globe className="h-3.5 w-3.5 text-luxury-gold animate-spin-slow" />
-                  <span>PRESTIGE MODE // LOCAL SECURE</span>
-                </div>
-                <p className="text-xxxxs font-mono tracking-[0.2em] text-zinc-500 dark:text-zinc-400">
-                  © 2026 DEBBIE INC. ALL COUTURE BLUEPRINTS PROTECTED.
-                </p>
-              </div>
             </motion.div>
           </>
         )}

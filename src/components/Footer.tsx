@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { useMarketplace } from '../contexts/MarketplaceContext';
-import { Mail, Check, CreditCard, ShieldCheck, Truck, RefreshCw, PhoneCall, Gift, BookOpen } from 'lucide-react';
+import { Mail, Check, CreditCard, ShieldCheck, Truck, RefreshCw, PhoneCall, Gift, BookOpen, Instagram, Facebook, Twitter } from 'lucide-react';
 import { defaultHomepageConfig } from '../utils/defaultHomepageConfig';
 
 export const Footer: React.FC = () => {
@@ -158,18 +158,30 @@ export const Footer: React.FC = () => {
           </form>
 
           {/* Social media connections builders */}
-          <div className="flex items-center space-x-3.5 pt-3">
+          <div className="flex items-center space-x-2 pt-3 flex-wrap gap-y-2">
             {footerConfig.social_instagram && (
-              <a href={footerConfig.social_instagram} target="_blank" rel="noreferrer" className="text-xxs uppercase tracking-wider font-mono hover:text-white text-zinc-500 transition-colors">INSTAGRAM</a>
+              <a href={footerConfig.social_instagram} target="_blank" rel="noreferrer" className="flex items-center space-x-1.5 text-[10px] uppercase tracking-wider font-mono hover:text-white text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900 transition-colors bg-zinc-900/40 px-2.5 py-1 rounded-md border border-zinc-900">
+                <Instagram className="h-3 w-3 text-luxury-gold shrink-0" />
+                <span>Instagram</span>
+              </a>
             )}
             {footerConfig.social_facebook && (
-              <a href={footerConfig.social_facebook} target="_blank" rel="noreferrer" className="text-xxs uppercase tracking-wider font-mono hover:text-white text-zinc-500 transition-colors">FACEBOOK</a>
+              <a href={footerConfig.social_facebook} target="_blank" rel="noreferrer" className="flex items-center space-x-1.5 text-[10px] uppercase tracking-wider font-mono hover:text-white text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900 transition-colors bg-zinc-900/40 px-2.5 py-1 rounded-md border border-zinc-900">
+                <Facebook className="h-3 w-3 text-luxury-gold shrink-0" />
+                <span>Facebook</span>
+              </a>
             )}
             {footerConfig.social_twitter && (
-              <a href={footerConfig.social_twitter} target="_blank" rel="noreferrer" className="text-xxs uppercase tracking-wider font-mono hover:text-white text-zinc-500 transition-colors">TWITTER</a>
+              <a href={footerConfig.social_twitter} target="_blank" rel="noreferrer" className="flex items-center space-x-1.5 text-[10px] uppercase tracking-wider font-mono hover:text-white text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900 transition-colors bg-zinc-900/40 px-2.5 py-1 rounded-md border border-zinc-900">
+                <Twitter className="h-3 w-3 text-luxury-gold shrink-0" />
+                <span>Twitter</span>
+              </a>
             )}
             {footerConfig.social_pinterest && (
-              <a href={footerConfig.social_pinterest} target="_blank" rel="noreferrer" className="text-xxs uppercase tracking-wider font-mono hover:text-white text-zinc-500 transition-colors">PINTEREST</a>
+              <a href={footerConfig.social_pinterest} target="_blank" rel="noreferrer" className="flex items-center space-x-1.5 text-[10px] uppercase tracking-wider font-mono hover:text-white text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900 transition-colors bg-zinc-900/40 px-2.5 py-1 rounded-md border border-zinc-900">
+                <span className="text-luxury-gold font-bold text-[10px] leading-none shrink-0">P</span>
+                <span>Pinterest</span>
+              </a>
             )}
           </div>
         </div>
