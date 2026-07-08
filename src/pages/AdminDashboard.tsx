@@ -51,6 +51,7 @@ export const AdminDashboard: React.FC = () => {
     updatePromotion,
     deletePromotion,
     createMedia,
+    updateMedia,
     deleteMedia,
     updateSettings,
     loadAdminStatsAndOrders
@@ -129,7 +130,7 @@ export const AdminDashboard: React.FC = () => {
                 required 
                 value={username} 
                 onChange={(e) => setUsername(e.target.value)} 
-                placeholder="debbie" 
+                placeholder="admin" 
                 className="w-full bg-zinc-50 dark:bg-zinc-900 border p-3 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
               />
             </div>
@@ -389,6 +390,7 @@ export const AdminDashboard: React.FC = () => {
           <AdminMediaTab 
             media={media}
             createMedia={createMedia}
+            updateMedia={updateMedia}
             deleteMedia={deleteMedia}
           />
         )}

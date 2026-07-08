@@ -3,6 +3,7 @@ import {
   FolderPlus, Plus, Sparkles, Folder, Layers, Trash2
 } from 'lucide-react';
 import { Category, Collection } from '../../types';
+import { MediaSelectorModal } from './MediaSelectorModal';
 
 interface AdminCategoriesCollectionsTabProps {
   categories: Category[];
@@ -35,6 +36,9 @@ export const AdminCategoriesCollectionsTab: React.FC<AdminCategoriesCollectionsT
   const [catImg, setCatImg] = useState('');
   const [catError, setCatError] = useState('');
   const [catSuccess, setCatSuccess] = useState('');
+
+  // Picker target selection
+  const [pickerTarget, setPickerTarget] = useState<'col' | 'cat' | null>(null);
 
   const handleCreateCollection = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,7 +123,16 @@ export const AdminCategoriesCollectionsTab: React.FC<AdminCategoriesCollectionsT
           </div>
 
           <div className="space-y-1">
-            <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Backdrop Lookbook Image URL</span>
+            <div className="flex justify-between items-center">
+              <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Backdrop Lookbook Image URL</span>
+              <button 
+                type="button" 
+                onClick={() => setPickerTarget('col')}
+                className="text-[9px] font-mono font-bold text-luxury-gold hover:underline border-none bg-transparent cursor-pointer"
+              >
+                Choose from Library
+              </button>
+            </div>
             <input type="text" value={colImg} onChange={(e) => setColImg(e.target.value)} placeholder="https://images.unsplash.com/photo-1..." className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold text-xxs font-mono" />
           </div>
 
@@ -178,7 +191,16 @@ export const AdminCategoriesCollectionsTab: React.FC<AdminCategoriesCollectionsT
           </div>
 
           <div className="space-y-1">
-            <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Cover Thumbnail Image URL</span>
+            <div className="flex justify-between items-center">
+              <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Cover Thumbnail Image URL</span>
+              <button 
+                type="button" 
+                onClick={() => setPickerTarget('cat')}
+                className="text-[9px] font-mono font-bold text-luxury-gold hover:underline border-none bg-transparent cursor-pointer"
+              >
+                Choose from Library
+              </button>
+            </div>
             <input type="text" value={catImg} onChange={(e) => setCatImg(e.target.value)} placeholder="https://images.unsplash.com/photo-2..." className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold text-xxs font-mono" />
           </div>
 
@@ -219,6 +241,15 @@ export const AdminCategoriesCollectionsTab: React.FC<AdminCategoriesCollectionsT
           </div>
         </div>
       </div>
+
+      <MediaSelectorModal 
+        isOpen={!!pickerTarget} 
+        onClose={() => setPickerTarget(null)} 
+        onSelect={(url) => {
+          if (pickerTarget === 'col') setColImg(url);
+          else if (pickerTarget === 'cat') setCatImg(url);
+        }} 
+      />
 
     </div>
   );

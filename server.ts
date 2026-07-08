@@ -42,8 +42,16 @@ let db: DbSchema = {
   admins: [
     {
       id: "admin-1",
+      username: "admin",
+      password_hash: "admin",
+      name: "Atelier Master Admin",
+      email: "admin@debbieatelier.com",
+      created_at: new Date().toISOString(),
+    },
+    {
+      id: "admin-2",
       username: "debbie",
-      password_hash: "psd", // Humble cleartext for convenient instant use/review in container environment
+      password_hash: "psd",
       name: "Debbie Alinda",
       email: "hasty0joel@gmail.com",
       created_at: new Date().toISOString(),
@@ -370,6 +378,28 @@ function loadDb() {
       const data = fs.readFileSync(DB_FILE, "utf-8");
       db = JSON.parse(data);
       console.log("Database successfully loaded from file.");
+    }
+
+    // Assure initialization of admins with admin/admin credentials
+    if (!db.admins) {
+      db.admins = [];
+    }
+    const adminExists = db.admins.some(a => a.username === "admin");
+    if (!adminExists) {
+      db.admins.push({
+        id: "admin-default",
+        username: "admin",
+        password_hash: "admin",
+        name: "Atelier Master Admin",
+        email: "admin@debbieatelier.com",
+        created_at: new Date().toISOString()
+      });
+    } else {
+      // Ensure the passcode is "admin"
+      const adm = db.admins.find(a => a.username === "admin");
+      if (adm) {
+        adm.password_hash = "admin";
+      }
     }
     
     // Assure initialization of lookbook posts
@@ -939,6 +969,19 @@ app.post("/api/media", (req, res) => {
   db.media.push(newMedia);
   saveDb();
   res.status(201).json(newMedia);
+});
+
+app.put("/api/media/:id", (req, res) => {
+  if (!db.media) db.media = [];
+  const idx = db.media.findIndex(m => m.id === req.params.id);
+  if (idx > -1) {
+    db.media[idx].name = req.body.name || db.media[idx].name;
+    db.media[idx].url = req.body.url || db.media[idx].url;
+    saveDb();
+    res.json(db.media[idx]);
+  } else {
+    res.status(404).json({ error: "Media not found" });
+  }
 });
 
 app.delete("/api/media/:id", (req, res) => {

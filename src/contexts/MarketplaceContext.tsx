@@ -98,6 +98,7 @@ interface MarketplaceContextType {
   updatePromotion: (id: string, data: Partial<Promotion>) => Promise<boolean>;
   deletePromotion: (id: string) => Promise<boolean>;
   createMedia: (name: string, url: string) => Promise<boolean>;
+  updateMedia: (id: string, name: string) => Promise<boolean>;
   deleteMedia: (id: string) => Promise<boolean>;
   updateSettings: (data: Partial<StoreSettings>) => Promise<boolean>;
   toasts: Array<{ id: string; message: string; type: 'success' | 'info' | 'error' }>;
@@ -428,7 +429,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   // 8. Admin Controls
-  const loginAdmin = async (password: string, username = "debbie") => {
+  const loginAdmin = async (password: string, username = "admin") => {
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
@@ -599,6 +600,23 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     try {
       const res = await fetch(`/api/media/${id}`, {
         method: "DELETE"
+      });
+      if (res.ok) {
+        await loadAdminStatsAndOrders();
+        return true;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    return false;
+  };
+
+  const updateMedia = async (id: string, name: string) => {
+    try {
+      const res = await fetch(`/api/media/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
       });
       if (res.ok) {
         await loadAdminStatsAndOrders();
@@ -873,6 +891,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       updatePromotion,
       deletePromotion,
       createMedia,
+      updateMedia,
       deleteMedia,
       updateSettings,
       toasts,

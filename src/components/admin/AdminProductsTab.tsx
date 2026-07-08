@@ -3,6 +3,7 @@ import {
   Sparkles, ToggleLeft, ToggleRight, Filter, Search, Plus, Pencil, Trash2, Tag, Check, Eye
 } from 'lucide-react';
 import { Product, Category, Collection } from '../../types';
+import { MediaSelectorModal } from './MediaSelectorModal';
 
 interface AdminProductsTabProps {
   products: Product[];
@@ -49,6 +50,7 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
 
   // Form errors
   const [errorMsg, setErrorMsg] = useState('');
+  const [mediaSelectorOpen, setMediaSelectorOpen] = useState(false);
 
   const handleOpenCreateForm = () => {
     setSelectedProduct(null);
@@ -268,7 +270,16 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
               </div>
 
               <div className="space-y-1">
-                <span className="text-xxs font-bold text-zinc-455 uppercase tracking-wider block font-mono">Primary Image thumbnail URL</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-xxs font-bold text-zinc-455 uppercase tracking-wider block font-mono">Primary Image thumbnail URL</span>
+                  <button 
+                    type="button" 
+                    onClick={() => setMediaSelectorOpen(true)}
+                    className="text-[9px] font-mono font-bold text-luxury-gold hover:underline border-none bg-transparent cursor-pointer"
+                  >
+                    Choose from Library
+                  </button>
+                </div>
                 <input type="text" required value={imgUrl} onChange={(e) => setImgUrl(e.target.value)} placeholder="https://images.unsplash.com/photo-..." className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2 rounded focus:outline-none focus:border-luxury-gold dark:text-white border-zinc-200 dark:border-zinc-800" />
               </div>
 
@@ -457,6 +468,12 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
           </table>
         </div>
       </div>
+
+      <MediaSelectorModal 
+        isOpen={mediaSelectorOpen} 
+        onClose={() => setMediaSelectorOpen(false)} 
+        onSelect={(url) => setImgUrl(url)} 
+      />
 
     </div>
   );

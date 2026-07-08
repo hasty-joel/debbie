@@ -3,6 +3,7 @@ import {
   Sparkles, Camera, Plus, Trash2, Pencil 
 } from 'lucide-react';
 import { Post, Collection } from '../../types';
+import { MediaSelectorModal } from './MediaSelectorModal';
 
 interface AdminInspirationTabProps {
   posts: Post[];
@@ -32,6 +33,7 @@ export const AdminInspirationTab: React.FC<AdminInspirationTabProps> = ({
 
   const [err, setErr] = useState('');
   const [success, setSuccess] = useState('');
+  const [mediaSelectorOpen, setMediaSelectorOpen] = useState(false);
 
   const handleOpenCreateForm = () => {
     setSelectedPost(null);
@@ -154,7 +156,16 @@ export const AdminInspirationTab: React.FC<AdminInspirationTabProps> = ({
               </div>
 
               <div className="space-y-1">
-                <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Image Backdrop URL</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Image Backdrop URL</span>
+                  <button 
+                    type="button" 
+                    onClick={() => setMediaSelectorOpen(true)}
+                    className="text-[9px] font-mono font-bold text-luxury-gold hover:underline border-none bg-transparent cursor-pointer"
+                  >
+                    Choose from Library
+                  </button>
+                </div>
                 <input type="text" required value={image} onChange={(e) => setImage(e.target.value)} placeholder="https://images.unsplash.com/photo-1..." className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold text-xxs font-mono" />
               </div>
 
@@ -278,6 +289,12 @@ export const AdminInspirationTab: React.FC<AdminInspirationTabProps> = ({
           })
         )}
       </div>
+
+      <MediaSelectorModal 
+        isOpen={mediaSelectorOpen} 
+        onClose={() => setMediaSelectorOpen(false)} 
+        onSelect={(url) => setImage(url)} 
+      />
 
     </div>
   );
