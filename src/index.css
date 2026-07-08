@@ -27,11 +27,44 @@
 html {
   scroll-behavior: smooth;
   font-family: var(--font-sans);
+  background-color: #FCFBF7; /* Light Mode Luxury Warm Parchment */
+  color: #1c1917; /* High-contrast stone charcoal */
 }
 
 body {
   transition: background-color 0.4s ease, color 0.4s ease;
   overflow-x: hidden;
+  background-color: #FCFBF7; /* Light Mode Luxury Warm Parchment */
+  color: #1c1917; /* High-contrast stone charcoal */
+}
+
+.dark html, .dark body {
+  background-color: #060606; /* Dark Obsidian Obsidian */
+  color: #f4f4f5; /* High-contrast zinc-100 */
+}
+
+/* Black and Gold Luxury Gradient with animated background fade transition */
+.luxury-black-gold-bg {
+  background: linear-gradient(135deg, #FAF8F2 0%, #F5EFEB 35%, #EDE5D9 65%, #FAF8F2 100%);
+  background-size: 200% 200%;
+  animation: bgGradientFade 12s ease infinite alternate;
+  position: relative;
+}
+
+.dark .luxury-black-gold-bg, .luxury-black-gold-bg-dark {
+  background: linear-gradient(135deg, #020202 0%, #110e08 35%, #181308 65%, #050505 100%);
+  background-position: center;
+  background-size: 200% 200%;
+  animation: bgGradientFade 12s ease infinite alternate;
+}
+
+@keyframes bgGradientFade {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Custom gorgeous scrollbar */
@@ -58,3 +91,59 @@ body {
 .font-mono {
   font-family: var(--font-mono);
 }
+
+/* Base style for input types: elegant darkslate font color for exceptional legibility */
+input[type="text"], 
+input[type="tel"], 
+input[type="email"], 
+input[type="number"], 
+input[type="password"], 
+select, 
+textarea {
+  color: #2f4f4f !important; /* Premium Dark Slate */
+  background-color: #fcfbf7 !important; /* Rich warm paper tone */
+  border-color: #dcd7cb !important;
+}
+
+input[type="text"]:focus, 
+input[type="tel"]:focus, 
+input[type="email"]:focus, 
+input[type="number"]:focus, 
+input[type="password"]:focus, 
+select:focus, 
+textarea:focus {
+  background-color: #ffffff !important;
+  border-color: var(--color-luxury-gold) !important;
+  color: #1a2b2c !important;
+}
+
+/* Dark mode inputs carry high legibility soft white font paired with beautiful obsidian slate background */
+.dark input[type="text"], 
+.dark input[type="tel"], 
+.dark input[type="email"], 
+.dark input[type="number"], 
+.dark input[type="password"], 
+.dark select, 
+.dark textarea {
+  color: #f4f4f5 !important; /* Soft white zinc text */
+  background-color: #121211 !important; /* Premium Obsidian Dark Bg */
+  border-color: #2b2823 !important; /* Subtle luxury gold outline link */
+}
+
+.dark input[type="text"]:focus, 
+.dark input[type="tel"]:focus, 
+.dark input[type="email"]:focus, 
+.dark input[type="number"]:focus, 
+.dark input[type="password"]:focus, 
+.dark select:focus, 
+.dark textarea:focus {
+  background-color: #1a1a18 !important;
+  border-color: var(--color-luxury-gold) !important;
+  color: #ffffff !important;
+}
+
+/* Focused UI element customized style */
+div#root:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > header:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) {
+  background-color: darkslategrey !important;
+}
+

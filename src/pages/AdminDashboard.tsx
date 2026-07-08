@@ -117,7 +117,7 @@ export const AdminDashboard: React.FC = () => {
             <div className="h-14 w-14 rounded-full bg-linear-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mx-auto shadow-sm select-none">
               <Lock className="h-6 w-6 text-luxury-gold animate-pulse shrink-0" />
             </div>
-            <h2 className="font-display text-xs font-bold tracking-widest uppercase text-zinc-90 w-full text-zinc-900 dark:text-white pt-2">Atelier Vault Lock</h2>
+            <h2 className="font-display text-xs font-bold tracking-widest uppercase w-full text-zinc-900 dark:text-white pt-2">Atelier Vault Lock</h2>
             <p className="text-[10px] text-zinc-400 font-sans">Cryptographically secured endpoint for authentic Debbie curators only.</p>
           </div>
 
@@ -129,8 +129,8 @@ export const AdminDashboard: React.FC = () => {
                 required 
                 value={username} 
                 onChange={(e) => setUsername(e.target.value)} 
-                placeholder="debbie_admin" 
-                className="w-full bg-zinc-50 dark:bg-zinc-95 border p-3 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
+                placeholder="debbie" 
+                className="w-full bg-zinc-50 dark:bg-zinc-900 border p-3 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
               />
             </div>
 
@@ -301,7 +301,7 @@ export const AdminDashboard: React.FC = () => {
             </h2>
           </div>
 
-          <span className="h-fit py-1 px-3 border border-zinc-200 dark:border-zinc-800 rounded text-[10px] font-mono tracking-wider text-zinc-450 uppercase flex items-center gap-1.5 bg-zinc-50 dark:bg-zinc-90 w-fit select-none font-semibold">
+          <span className="h-fit py-1 px-3 border border-zinc-200 dark:border-zinc-800 rounded text-[10px] font-mono tracking-wider text-zinc-450 uppercase flex items-center gap-1.5 bg-zinc-50 dark:bg-zinc-900 w-fit select-none font-semibold">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>Joel Authorized</span>
           </span>

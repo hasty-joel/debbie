@@ -124,7 +124,7 @@ export const AdminSettingsTab: React.FC = () => {
           <div className="space-y-3 pt-2">
             <div className="space-y-1">
               <span className="font-bold text-zinc-400 uppercase tracking-wider block font-mono">Curator account handle</span>
-              <input type="text" defaultValue="debbie_admin" disabled className="w-full bg-zinc-100 dark:bg-zinc-90 border p-2 rounded focus:outline-none cursor-not-allowed font-mono text-[10px]" />
+              <input type="text" defaultValue="debbie" disabled className="w-full bg-zinc-100 dark:bg-zinc-90 border p-2 rounded focus:outline-none cursor-not-allowed font-mono text-[10px]" />
             </div>
 
             <div className="space-y-1">

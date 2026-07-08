@@ -185,11 +185,11 @@ export const Home: React.FC<HomeProps> = ({ previewConfig }) => {
                 <div className="flex items-center space-x-3.5">
                   <Clock className="h-4 w-4 text-zinc-400" />
                   <div className="flex space-x-1.5 text-xs font-mono">
-                    <span className="bg-zinc-90 w-10 text-center py-2.5 bg-zinc-900 rounded font-bold">{formatNum(timeLeft.hours)}</span>
+                    <span className="w-10 text-center py-2.5 bg-zinc-900 rounded font-bold">{formatNum(timeLeft.hours)}</span>
                     <span className="py-2.5">:</span>
-                    <span className="bg-zinc-90 w-10 text-center py-2.5 bg-zinc-900 rounded font-bold">{formatNum(timeLeft.minutes)}</span>
+                    <span className="w-10 text-center py-2.5 bg-zinc-900 rounded font-bold">{formatNum(timeLeft.minutes)}</span>
                     <span className="py-2.5">:</span>
-                    <span className="bg-zinc-90 w-10 text-center py-2.5 bg-zinc-900 rounded font-bold font-mono text-luxury-gold">{formatNum(timeLeft.seconds)}</span>
+                    <span className="w-10 text-center py-2.5 bg-zinc-900 rounded font-bold font-mono text-luxury-gold">{formatNum(timeLeft.seconds)}</span>
                   </div>
                   <button 
                     onClick={() => setCurrentView('catalog')}
@@ -532,7 +532,7 @@ export const Home: React.FC<HomeProps> = ({ previewConfig }) => {
                       {post.tags && post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1 pt-1.5">
                           {post.tags.map((tag, idx) => (
-                            <span key={idx} className="text-[8px] font-mono font-medium text-zinc-400 bg-zinc-50 dark:bg-zinc-90 px-1.5 py-0.5 rounded border border-zinc-150 dark:border-zinc-850 uppercase">
+                            <span key={idx} className="text-[8px] font-mono font-medium text-zinc-400 bg-zinc-50 dark:bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-150 dark:border-zinc-850 uppercase">
                               {tag.startsWith('#') ? tag : `#${tag}`}
                             </span>
                           ))}

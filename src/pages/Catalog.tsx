@@ -118,7 +118,7 @@ export const Catalog: React.FC = () => {
       {/* 1. EDITORIAL TITLE */}
       <div className="space-y-1.5 border-b border-zinc-200/50 dark:border-zinc-800/50 pb-5 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="font-display text-3xl font-bold tracking-tight text-zinc-900 dark:text-white uppercase">Atelier Catalog</h1>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-zinc-900 dark:text-white uppercase">Catalog</h1>
           <p className="text-xs text-zinc-500 font-sans">Locate premium garments tailored to your specific lifestyle coordinates.</p>
         </div>
         <span className="text-xxs font-mono tracking-widest font-semibold text-luxury-gold uppercase px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850 self-start md:self-auto">
@@ -327,7 +327,7 @@ export const Catalog: React.FC = () => {
         <main className="lg:col-span-3">
           
           {filteredProducts.length === 0 ? (
-            <div className="bg-zinc-50/50 dark:bg-zinc-905/30 border border-zinc-150 dark:border-zinc-850 p-12 text-center rounded-2xl max-w-lg mx-auto space-y-4 shadow-xl">
+            <div className="bg-zinc-50/50 dark:bg-zinc-900/30 border border-zinc-150 dark:border-zinc-850 p-12 text-center rounded-2xl max-w-lg mx-auto space-y-4 shadow-xl">
               <div className="mx-auto h-16 w-16 bg-white dark:bg-zinc-950 rounded-full flex items-center justify-center border border-zinc-200/50 dark:border-zinc-800">
                 <AlertCircle className="h-6 w-6 text-luxury-gold" />
               </div>

@@ -109,7 +109,7 @@ export const Checkout: React.FC = () => {
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="e.g. Brenda Joyce Alinda"
-                  className="w-full bg-zinc-50 dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
                 />
               </div>
             </div>
@@ -126,7 +126,7 @@ export const Checkout: React.FC = () => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="770000000"
-                    className="w-full bg-zinc-50 dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-800 pl-14 pr-4 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 pl-14 pr-4 py-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
                   />
                 </div>
               </div>
@@ -137,7 +137,7 @@ export const Checkout: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="brenda@gmail.com"
-                  className="w-full bg-zinc-50 dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-80s p-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-550 focus:outline-none focus:border-luxury-gold"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
                 />
               </div>
             </div>
@@ -151,7 +151,7 @@ export const Checkout: React.FC = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Details of delivery location (e.g. Kololo Hills, Acacia Avenue, Block 5 apartment, Nakasero lounge)..."
-                className="w-full bg-zinc-50 dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-800 p-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
+                className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
               ></textarea>
             </div>
 
@@ -163,7 +163,7 @@ export const Checkout: React.FC = () => {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="e.g. Please wrap with custom satin ribbons, or check sizes for cargos..."
-                className="w-full bg-zinc-50 dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-800 p-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-550 focus:outline-none focus:border-luxury-gold"
+                className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-luxury-gold"
               />
             </div>
 

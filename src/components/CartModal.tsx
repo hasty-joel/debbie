@@ -67,7 +67,7 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
                     onClick={() => { onClose(); setCurrentView('catalog'); }}
                     className="mt-2 text-xs tracking-widest uppercase font-semibold text-luxury-gold hover:text-zinc-950 dark:hover:text-white transition-colors duration-200"
                   >
-                    View Atelier Catalog &rarr;
+                    View Catalog &rarr;
                   </button>
                 </div>
               ) : (

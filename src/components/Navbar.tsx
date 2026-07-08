@@ -21,8 +21,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenWishlist }) =>
   const wishlistCount = wishlist.length;
 
   const navItems = [
-    { label: 'Aura Home', view: 'home' as const, icon: Home },
-    { label: 'Atelier Catalog', view: 'catalog' as const, icon: Compass },
+    { label: 'Home', view: 'home' as const, icon: Home },
+    { label: 'Catalog', view: 'catalog' as const, icon: Compass },
     { label: 'Outfit Creator', view: 'outfit-builder' as const, icon: Shirt },
     { label: 'Gemini Stylist', view: 'ai-stylist' as const, icon: Sparkles },
   ];
@@ -163,25 +163,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenWishlist }) =>
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 180 }}
-              className="fixed right-0 top-0 bottom-0 z-50 w-[80%] max-w-sm bg-zinc-950 border-l border-zinc-900 text-white p-6 shadow-[0_0_50px_rgba(0,0,0,0.95)] flex flex-col justify-between min-[700px]:hidden opacity-100"
+              className="fixed right-0 top-0 bottom-0 z-50 w-[80%] max-w-sm bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-900 text-stone-900 dark:text-white p-6 shadow-2xl flex flex-col justify-between min-[700px]:hidden opacity-100 transition-colors duration-450"
             >
               <div>
                 {/* Header of Sidebar */}
-                <div className="flex items-center justify-between pb-6 border-b border-slate-900">
+                <div className="flex items-center justify-between pb-6 border-b border-zinc-200 dark:border-zinc-800">
                   <div className="flex items-center space-x-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-zinc-950 shadow-[0_0_10px_rgba(212,175,55,0.4)]">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-[0_0_10px_rgba(212,175,55,0.4)]">
                       <span className="font-display text-base font-bold tracking-widest">D</span>
                     </div>
-                    <span className="font-display text-sm font-semibold tracking-widest uppercase">Atelier Aura</span>
+                    <span className="font-display text-sm font-semibold tracking-widest uppercase text-zinc-900 dark:text-white">Atelier</span>
                   </div>
                   <button 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 rounded-full text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer"
+                    className="p-1 rounded-full text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors duration-200 cursor-pointer"
                   >
                     <X className="h-5 w-5" />
                   </button>
                 </div>
-
+ 
                 {/* Staggered Navigation Items list */}
                 <div className="mt-8 space-y-2">
                   <p className="text-xxxxs font-mono tracking-[0.3em] text-luxury-gold/80 uppercase mb-4 pl-3">SYSTEM SECTIONS</p>
@@ -197,8 +197,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenWishlist }) =>
                         onClick={() => handleNavClick(item.view)}
                         className={`w-full py-4 px-4 flex items-center space-x-3.5 text-xs font-semibold tracking-widest uppercase rounded-xl transition-all duration-300 border-l-2 cursor-pointer ${
                           isActive 
-                            ? 'border-luxury-gold text-luxury-gold bg-slate-900/60 shadow-[inset_0_0_15px_rgba(212,175,55,0.05)]' 
-                            : 'border-transparent text-zinc-400 hover:text-white hover:bg-slate-900/30'
+                            ? 'border-luxury-gold text-luxury-gold bg-zinc-100 dark:bg-slate-900/60 shadow-[inset_0_0_15px_rgba(212,175,55,0.05)]' 
+                            : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-slate-900/30'
                         }`}
                       >
                         <Icon className={`h-4.5 w-4.5 ${isActive ? 'text-luxury-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-zinc-500'}`} />
@@ -208,14 +208,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenWishlist }) =>
                   })}
                 </div>
               </div>
-
+ 
               {/* Sidebar Footer Metadata & Brand coordinates */}
-              <div className="pt-6 border-t border-slate-900/80 space-y-4">
+              <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
                 <div className="flex items-center space-x-2 text-xxs font-mono text-zinc-500 tracking-wider">
                   <Globe className="h-3.5 w-3.5 text-luxury-gold animate-spin-slow" />
                   <span>PRESTIGE MODE // LOCAL SECURE</span>
                 </div>
-                <p className="text-xxxxs font-mono tracking-[0.2em] text-zinc-600">
+                <p className="text-xxxxs font-mono tracking-[0.2em] text-zinc-500 dark:text-zinc-400">
                   © 2026 DEBBIE INC. ALL COUTURE BLUEPRINTS PROTECTED.
                 </p>
               </div>

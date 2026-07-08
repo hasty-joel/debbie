@@ -65,6 +65,7 @@ interface MarketplaceContextType {
   loginAdmin: (password: string, username?: string) => Promise<boolean>;
   logoutAdmin: () => void;
   adminOrders: any[];
+  orders: any[];
   adminStats: DashboardStats | null;
   loadAdminStatsAndOrders: () => Promise<void>;
 
@@ -99,11 +100,24 @@ interface MarketplaceContextType {
   createMedia: (name: string, url: string) => Promise<boolean>;
   deleteMedia: (id: string) => Promise<boolean>;
   updateSettings: (data: Partial<StoreSettings>) => Promise<boolean>;
+  toasts: Array<{ id: string; message: string; type: 'success' | 'info' | 'error' }>;
+  triggerFeedback: (message: string, type?: 'success' | 'info' | 'error') => void;
 }
 
 const MarketplaceContext = createContext<MarketplaceContextType | undefined>(undefined);
 
 export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Feedback Toasts local state
+  const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: 'success' | 'info' | 'error' }>>([]);
+
+  const triggerFeedback = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
+    const id = Math.random().toString(36).slice(2, 9);
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 4000);
+  };
+
   // Store lists
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -122,7 +136,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [wishlist, setWishlist] = useState<Product[]>([]);
 
   // Aesthetic theme state
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
   // AI recommendations
   const [aiResult, setAiResult] = useState<any>(null);
@@ -170,13 +184,13 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
         const settData = resSettings.ok ? await resSettings.json() : null;
         const promoData = resPromotions.ok ? await resPromotions.json() : [];
 
-        setProducts(prod);
-        setCategories(cat);
-        setCollections(col);
-        setBanners(ban);
-        setPosts(postData);
+        setProducts(Array.isArray(prod) ? prod : []);
+        setCategories(Array.isArray(cat) ? cat : []);
+        setCollections(Array.isArray(col) ? col : []);
+        setBanners(Array.isArray(ban) ? ban : []);
+        setPosts(Array.isArray(postData) ? postData : []);
         setSettings(settData);
-        setPromotions(promoData);
+        setPromotions(Array.isArray(promoData) ? promoData : []);
         setError(null);
       } else {
         throw new Error("Failed to load official Debbie Fashion backend systems");
@@ -196,7 +210,8 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const cachedCart = localStorage.getItem("debbie_cart");
     if (cachedCart) {
       try {
-        setCart(JSON.parse(cachedCart));
+        const parsed = JSON.parse(cachedCart);
+        setCart(Array.isArray(parsed) ? parsed : []);
       } catch (e) {
         setCart([]);
       }
@@ -206,7 +221,8 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const cachedWish = localStorage.getItem("debbie_wishlist");
     if (cachedWish) {
       try {
-        setWishlist(JSON.parse(cachedWish));
+        const parsed = JSON.parse(cachedWish);
+        setWishlist(Array.isArray(parsed) ? parsed : []);
       } catch (e) {
         setWishlist([]);
       }
@@ -222,9 +238,12 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     // Default theme check
     const currentTheme = localStorage.getItem("debbie_theme") as 'light' | 'dark' | null;
-    if (currentTheme) {
-      setTheme(currentTheme);
-      if (currentTheme === 'dark') document.documentElement.classList.add('dark');
+    const initialTheme = currentTheme || 'dark';
+    setTheme(initialTheme);
+    if (initialTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
   }, []);
 
@@ -246,6 +265,8 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
         item.selectedSize === size && 
         item.selectedColor === color
       );
+
+      triggerFeedback(`Added ${product.title} to Cart!`);
 
       if (existingIdx > -1) {
         const updated = [...prev];
@@ -282,8 +303,10 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setWishlist(prev => {
       const exists = prev.some(item => item.id === product.id);
       if (exists) {
+        triggerFeedback(`Removed ${product.title} from Wishlist`);
         return prev.filter(item => item.id !== product.id);
       } else {
+        triggerFeedback(`Added ${product.title} to Wishlist!`);
         return [...prev, product];
       }
     });
@@ -405,7 +428,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   // 8. Admin Controls
-  const loginAdmin = async (password: string, username = "debbie_admin") => {
+  const loginAdmin = async (password: string, username = "debbie") => {
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
@@ -446,10 +469,10 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
         const stats = await resStats.json();
         const med = resMedia.ok ? await resMedia.json() : [];
         const subs = resSubscribers.ok ? await resSubscribers.json() : [];
-        setAdminOrders(ords);
+        setAdminOrders(Array.isArray(ords) ? ords : []);
         setAdminStats(stats);
-        setMedia(med);
-        setSubscribers(subs);
+        setMedia(Array.isArray(med) ? med : []);
+        setSubscribers(Array.isArray(subs) ? subs : []);
       }
     } catch (err) {
       console.error(err);
@@ -767,6 +790,9 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
       });
+      if (res.ok) {
+        triggerFeedback("Subscribed to the Newsletter!");
+      }
       return res.ok;
     } catch (err) {
       console.error(err);
@@ -820,6 +846,7 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       loginAdmin,
       logoutAdmin,
       adminOrders,
+      orders: adminOrders,
       adminStats,
       loadAdminStatsAndOrders,
 
@@ -847,7 +874,9 @@ export const MarketplaceProvider: React.FC<{ children: React.ReactNode }> = ({ c
       deletePromotion,
       createMedia,
       deleteMedia,
-      updateSettings
+      updateSettings,
+      toasts,
+      triggerFeedback
     }}>
       {children}
     </MarketplaceContext.Provider>

@@ -42,8 +42,8 @@ let db: DbSchema = {
   admins: [
     {
       id: "admin-1",
-      username: "debbie_admin",
-      password_hash: "admin123", // Humble cleartext for convenient instant use/review in container environment
+      username: "debbie",
+      password_hash: "psd", // Humble cleartext for convenient instant use/review in container environment
       name: "Debbie Alinda",
       email: "hasty0joel@gmail.com",
       created_at: new Date().toISOString(),
@@ -661,6 +661,33 @@ app.post("/api/products/:id/reviews", (req, res) => {
   res.status(201).json(newReview);
 });
 
+app.get("/api/reviews", (req, res) => {
+  res.json(db.reviews || []);
+});
+
+app.delete("/api/reviews/:id", (req, res) => {
+  const reviewId = req.params.id;
+  const idx = db.reviews.findIndex(r => r.id === reviewId);
+  if (idx === -1) return res.status(404).json({ error: "Review not found" });
+  
+  const [removed] = db.reviews.splice(idx, 1);
+  
+  const prod = db.products.find(p => p.id === removed.product_id);
+  if (prod) {
+    const matchingReviews = db.reviews.filter(r => r.product_id === removed.product_id);
+    if (matchingReviews.length > 0) {
+      const totalRating = matchingReviews.reduce((sum, r) => sum + r.rating, 0);
+      prod.rating = Number((totalRating / matchingReviews.length).toFixed(1));
+    } else {
+      prod.rating = 5.0;
+    }
+    prod.reviews_count = matchingReviews.length;
+  }
+  
+  saveDb();
+  res.json({ success: true, removed });
+});
+
 // ORDERS & CHECKOUT ENGINE
 app.get("/api/orders", (req, res) => {
   // Map or seed values to support easy join metrics
@@ -1167,6 +1194,12 @@ Important details:
       matching_product_ids
     });
   }
+});
+
+
+// Fallback for any unhandled /api/* routes to prevent HTML/SPA fallback conflicts
+app.all("/api/*", (req, res) => {
+  res.status(404).json({ error: `Atelier API endpoint not found: ${req.method} ${req.url}` });
 });
 
 

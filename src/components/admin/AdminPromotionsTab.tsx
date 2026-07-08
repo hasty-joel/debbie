@@ -167,7 +167,7 @@ export const AdminPromotionsTab: React.FC<AdminPromotionsTabProps> = ({
 
                   <div className="text-[10px] text-zinc-455 space-y-0.5 font-mono">
                     <p>DURATION: {new Date(promo.start_date).toLocaleDateString()} - {new Date(promo.end_date).toLocaleDateString()}</p>
-                    <p className="text-zinc-400 font-sans italic">{promo.products.length} capsule garments associated with this campaign</p>
+                    <p className="text-zinc-400 font-sans italic">{(promo.products || []).length} capsule garments associated with this campaign</p>
                   </div>
                 </div>
 

@@ -11,7 +11,7 @@ import { Home } from '../../pages/Home';
 
 export const AdminHomepageTab: React.FC = () => {
   const { 
-    settings, updateSettings, products, collections, media, createMedia, deleteMedia 
+    settings, updateSettings, products, collections, media, createMedia, deleteMedia, triggerFeedback 
   } = useMarketplace();
 
   // Pick up or fallback configuration
@@ -83,25 +83,25 @@ export const AdminHomepageTab: React.FC = () => {
     if (success) {
       setIsDraftMode(false);
       setSavingStatus('saved');
-      alert("Atelier homepage coordinates successfully published to the live public server!");
+      triggerFeedback("Homepage published successfully!");
       setTimeout(() => setSavingStatus('idle'), 2500);
     } else {
       setSavingStatus('error');
-      alert("Failed to synchronize layout coordinates with live database.");
+      triggerFeedback("Failed to update settings.", "error");
     }
   };
 
   const recoverVersion = (config: HomepageConfig) => {
     if (window.confirm("Are you certain you want to rollback homepage coordinates to this historic version? Current adjustments will be overwritten.")) {
       setDraftConfig(config);
-      alert("Layout coordinates successfully rolled back. Review visual changes in live preview.");
+      triggerFeedback("Layout successfully rolled back!");
     }
   };
 
   const submitScheduledPublish = (e: React.FormEvent) => {
     e.preventDefault();
     if (!scheduledDate) return;
-    alert(`Homepage publishing scheduled successfully for ${scheduledDate} at ${scheduledTime || '00:00'}. Coordinates are secured.`);
+    triggerFeedback(`Publishing scheduled for ${scheduledDate}!`);
     setScheduledDate('');
     setScheduledTime('');
   };
@@ -1358,7 +1358,7 @@ export const AdminHomepageTab: React.FC = () => {
                   const verName = `v1.${versionHistory.length} - Custom Snapshot`;
                   const verTime = new Date().toISOString().replace('T', ' ').slice(0, 16);
                   setVersionHistory([...versionHistory, { id: verId, name: verName, timestamp: verTime, config: draftConfig }]);
-                  alert("Layout coordinates snapshot drafted successfully as restoration waypoint!");
+                  triggerFeedback("Layout snapshot drafted successfully!");
                 }}
                 className="px-2 py-1 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-95 text-[10px] uppercase font-mono tracking-normal cursor-pointer rounded shrink-0 font-bold"
               >
