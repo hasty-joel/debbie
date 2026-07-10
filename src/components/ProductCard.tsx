@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { Product } from '../types';
 import { useMarketplace } from '../contexts/MarketplaceContext';
 import { Heart, ShoppingCart, Star, Sparkles } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface ProductCardProps {
   product: Product;
@@ -40,8 +41,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const isFavorited = isInWishlist(product.id);
 
   return (
-    <div 
-      className="group relative flex flex-col bg-white dark:bg-zinc-950/80 dark:backdrop-blur-md border border-zinc-100 dark:border-zinc-900 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-luxury-gold/5 hover:-translate-y-1 cursor-pointer"
+    <motion.div 
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.25, 1, 0.5, 1] } }}
+      className="group relative flex flex-col bg-white dark:bg-zinc-950/80 dark:backdrop-blur-md border border-zinc-100 dark:border-zinc-900 rounded-2xl overflow-hidden transition-shadow duration-500 hover:shadow-2xl hover:shadow-luxury-gold/5 cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={handleInspect}
@@ -164,6 +170,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
       </div>
-    </div>
+    </motion.div>
   );
 };

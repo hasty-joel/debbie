@@ -108,6 +108,63 @@ export const AdminDashboard: React.FC = () => {
     }, 1200);
   };
 
+  // Register New Curator Account states & handler
+  const [showRegister, setShowRegister] = useState(false);
+  const [regName, setRegName] = useState('');
+  const [regUsername, setRegUsername] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [regError, setRegError] = useState('');
+  const [regSuccess, setRegSuccess] = useState('');
+  const [regLoading, setRegLoading] = useState(false);
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRegError('');
+    setRegSuccess('');
+    setRegLoading(true);
+
+    if (regPassword.length < 4) {
+      setRegError('Cryptographic key must be at least 4 characters.');
+      setRegLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/admin/accounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: regUsername.trim().toLowerCase(),
+          password: regPassword,
+          name: regName.trim(),
+          email: regEmail.trim()
+        })
+      });
+
+      if (res.ok) {
+        setRegSuccess(`Account established! Log in using @${regUsername.trim().toLowerCase()}`);
+        setRegName('');
+        setRegUsername('');
+        setRegEmail('');
+        setRegPassword('');
+        // Autofill for convenience
+        setUsername(regUsername.trim().toLowerCase());
+        setTimeout(() => {
+          setShowRegister(false);
+          setRegSuccess('');
+        }, 2200);
+      } else {
+        const errData = await res.json();
+        setRegError(errData.error || 'Failed to establish administrator account.');
+      }
+    } catch {
+      setRegError('Handshake timed out. Check connection endpoints.');
+    } finally {
+      setRegLoading(false);
+    }
+  };
+
   // 1. UNRECOGNIZED ACCESS: RENDER POLISHED LUXURY SECURITY SHIELD
   if (!isAdminLoggedIn) {
     return (
@@ -118,57 +175,166 @@ export const AdminDashboard: React.FC = () => {
             <div className="h-14 w-14 rounded-full bg-linear-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mx-auto shadow-sm select-none">
               <Lock className="h-6 w-6 text-luxury-gold animate-pulse shrink-0" />
             </div>
-            <h2 className="font-display text-xs font-bold tracking-widest uppercase w-full text-zinc-900 dark:text-white pt-2">Atelier Vault Lock</h2>
-            <p className="text-[10px] text-zinc-400 font-sans">Cryptographically secured endpoint for authentic Debbie curators only.</p>
+            <h2 className="font-display text-xs font-bold tracking-widest uppercase w-full text-zinc-900 dark:text-white pt-2">
+              {showRegister ? 'Deploy New Curator' : 'Atelier Vault Lock'}
+            </h2>
+            <p className="text-[10px] text-zinc-400 font-sans">
+              {showRegister 
+                ? 'Establish a new administrative curator profile with custom credentials.' 
+                : 'Cryptographically secured endpoint for authentic Debbie curators only.'
+              }
+            </p>
           </div>
 
-          <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs font-mono text-zinc-550 leading-relaxed">
-            <div className="space-y-1">
-              <span className="text-[9px] font-bold text-zinc-450 uppercase tracking-widest block select-none">Atelier Username</span>
-              <input 
-                type="text" 
-                required 
-                value={username} 
-                onChange={(e) => setUsername(e.target.value)} 
-                placeholder="admin" 
-                className="w-full bg-zinc-50 dark:bg-zinc-900 border p-3 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
-              />
-            </div>
+          {!showRegister ? (
+            <>
+              <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs font-mono text-zinc-550 leading-relaxed">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-bold text-zinc-450 uppercase tracking-widest block select-none">username</span>
+                  <input 
+                    type="text" 
+                    required 
+                    value={username} 
+                    onChange={(e) => setUsername(e.target.value)} 
+                    placeholder="admin" 
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border p-3 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
+                  />
+                </div>
 
-            <div className="space-y-1">
-              <span className="text-[9px] font-bold text-zinc-455 uppercase tracking-widest block select-none">Keychain Password</span>
-              <input 
-                type="password" 
-                required 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                placeholder="••••••••" 
-                className="w-full bg-zinc-50 dark:bg-zinc-95 border p-3 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
-              />
-            </div>
+                <div className="space-y-1">
+                  <span className="text-[9px] font-bold text-zinc-455 uppercase tracking-widest block select-none">password</span>
+                  <input 
+                    type="password" 
+                    required 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    placeholder="••••••••" 
+                    className="w-full bg-zinc-50 dark:bg-zinc-95 border p-3 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
+                  />
+                </div>
 
-            {authError && (
-              <p className="text-[10px] text-rose-500 font-bold italic text-center leading-normal animate-shake">{authError}</p>
-            )}
+                {authError && (
+                  <p className="text-[10px] text-rose-500 font-bold italic text-center leading-normal animate-shake">{authError}</p>
+                )}
 
-            <button 
-              type="submit" 
-              disabled={authLoading}
-              className="w-full bg-zinc-950 hover:bg-luxury-gold text-white font-bold py-3 uppercase tracking-widest text-[10px] transition-colors rounded select-none cursor-pointer border-none"
-            >
-              {authLoading ? 'Verifying Gateway...' : 'Decrypt Credentials'}
-            </button>
-          </form>
+                <button 
+                  type="submit" 
+                  disabled={authLoading}
+                  className="w-full bg-zinc-950 hover:bg-luxury-gold text-white font-bold py-3 uppercase tracking-widest text-[10px] transition-colors rounded select-none cursor-pointer border-none"
+                >
+                  {authLoading ? 'Verifying Gateway...' : 'login'}
+                </button>
+              </form>
 
-          {/* Forgot trigger */}
-          <div className="text-center">
-            <button 
-              onClick={() => setForgotOpen(true)}
-              className="text-[10px] underline hover:text-luxury-gold text-zinc-400 transition-colors bg-transparent border-none cursor-pointer"
-            >
-              Reset Keychain Coordinates?
-            </button>
-          </div>
+              {/* Forgot trigger */}
+              <div className="text-center">
+                <button 
+                  onClick={() => setForgotOpen(true)}
+                  className="text-[10px] underline hover:text-luxury-gold text-zinc-400 transition-colors bg-transparent border-none cursor-pointer"
+                >
+                  Reset Keychain Coordinates?
+                </button>
+              </div>
+
+              {/* CREATE NEW ACCOUNT ACTION & ACCOMPLISHMENTS */}
+              <div className="text-center pt-4 border-t border-zinc-100 dark:border-zinc-850 space-y-2">
+                <button 
+                  onClick={() => setShowRegister(true)}
+                  className="text-[11px] font-bold text-luxury-gold hover:underline bg-transparent border-none cursor-pointer uppercase tracking-wider block mx-auto font-mono"
+                >
+                  Create New Account
+                </button>
+                
+                <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded border border-zinc-150 dark:border-zinc-850 text-left space-y-1.5">
+                  <span className="text-[8px] font-mono font-bold tracking-widest text-zinc-400 uppercase block">Accomplishments & Privileges:</span>
+                  <ul className="text-[9px] text-zinc-450 dark:text-zinc-400 list-disc list-inside space-y-1 font-sans">
+                    <li>Immediate curator registration with dedicated credential vaults.</li>
+                    <li>Full capability to manage fashion items, categories, and promotions.</li>
+                    <li>Direct access to live orders, customer lists, and analytics.</li>
+                  </ul>
+                </div>
+              </div>
+            </>
+          ) : (
+            <form onSubmit={handleRegisterSubmit} className="space-y-4 text-xs font-mono text-zinc-550 leading-relaxed">
+              {regError && (
+                <p className="p-2.5 bg-rose-50 dark:bg-rose-950/20 text-rose-500 text-[10px] font-bold italic rounded text-center border border-rose-500/10 animate-shake">
+                  {regError}
+                </p>
+              )}
+              {regSuccess && (
+                <p className="p-2.5 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold italic rounded text-center border border-emerald-500/10">
+                  {regSuccess}
+                </p>
+              )}
+
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest block select-none">Full Name</span>
+                  <input 
+                    type="text" 
+                    required 
+                    placeholder="e.g. Sandra Atwine"
+                    value={regName} 
+                    onChange={(e) => setRegName(e.target.value)} 
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border p-2.5 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest block select-none">Registrar Email</span>
+                  <input 
+                    type="email" 
+                    required 
+                    placeholder="sandra@debbieatelier.com"
+                    value={regEmail} 
+                    onChange={(e) => setRegEmail(e.target.value)} 
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border p-2.5 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest block select-none">Atelier Username</span>
+                  <input 
+                    type="text" 
+                    required 
+                    placeholder="sandra.atwine"
+                    value={regUsername} 
+                    onChange={(e) => setRegUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))} 
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border p-2.5 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800 font-mono" 
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest block select-none">Atelier Passcode</span>
+                  <input 
+                    type="password" 
+                    required 
+                    placeholder="••••••••"
+                    value={regPassword} 
+                    onChange={(e) => setRegPassword(e.target.value)} 
+                    className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2.5 rounded focus:outline-none focus:border-luxury-gold dark:text-white text-xs border-zinc-200 dark:border-zinc-800" 
+                  />
+                </div>
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={regLoading}
+                className="w-full bg-zinc-950 hover:bg-luxury-gold text-white font-bold py-3 uppercase tracking-widest text-[10px] transition-colors rounded cursor-pointer border-none"
+              >
+                {regLoading ? 'Establishing Curator...' : 'Deploy Curator Account'}
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => { setShowRegister(false); setRegError(''); setRegSuccess(''); }}
+                className="w-full bg-transparent hover:text-luxury-gold text-zinc-400 font-bold py-2 uppercase tracking-widest text-[9px] transition-colors cursor-pointer border-none block text-center underline font-mono"
+              >
+                Return to Login
+              </button>
+            </form>
+          )}
 
           <div className="text-center font-mono text-[9px] text-zinc-400 opacity-60 pointer-events-none select-none">
             VAULT STATUS: ENCRYPTED // ATELIER SECURITY GATEWAY v1.4
