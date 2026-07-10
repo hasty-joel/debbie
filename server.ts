@@ -15,7 +15,8 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Path to JSON Database file for local persistence in preview
 const DB_FILE = path.join(process.cwd(), "db.json");
@@ -57,313 +58,13 @@ let db: DbSchema = {
       created_at: new Date().toISOString(),
     }
   ],
-  categories: [
-    { id: "cat-1", name: "Premium Tops", slug: "premium-tops", description: "Bespoke shirts, luxury tees and knitwear", image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800" },
-    { id: "cat-2", name: "Tailored Bottoms", slug: "tailored-bottoms", description: "Designer luxury pants, cargo styles and trousers", image: "https://images.unsplash.com/photo-1517462964-21fdcec3f25b?q=80&w=800" },
-    { id: "cat-3", name: "Footwear & Accessories", slug: "footwear-accessories", description: "High-end footwear, leather goods and jewelry", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800" },
-    { id: "cat-4", name: "Dresses & Outerwear", slug: "outerwear", description: "Stunning dresses, cashmere overcoats and formal attire", image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800" }
-  ],
-  collections: [
-    { id: "col-1", name: "Campus Drip", slug: "campus-drip", description: "High energy, comfort-forward styling for the modern academic setting.", image: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?q=80&w=800", lifestyle_theme: "campus" },
-    { id: "col-2", name: "Streetwear", slug: "streetwear", description: "Raw visual textures, oversized cuts and expressive silhouettes.", image: "https://images.unsplash.com/photo-1517462964-21fdcec3f25b?q=80&w=800", lifestyle_theme: "streetwear" },
-    { id: "col-3", name: "Weekend Vibes", slug: "weekend-vibes", description: "Relaxed linen coordinates and light premium knit sets.", image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800", lifestyle_theme: "relaxed" },
-    { id: "col-4", name: "CEO Mode", slug: "ceo-mode", description: "Impeccably tailored power trousers, structural blazers and clean lines.", image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800", lifestyle_theme: "business" },
-    { id: "col-5", name: "Date Night", slug: "date-night", description: "Sensual satin pieces, tailored fits and romantic allure.", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800", lifestyle_theme: "romantic" },
-    { id: "col-6", name: "Luxury Collection", slug: "luxury-collection", description: "Silk, cashmere, hand-stitched couture for discerning fashion editors.", image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=800", lifestyle_theme: "couture" },
-    { id: "col-7", name: "Summer Collection", slug: "summer-collection", description: "Unstructured linen shapes, sun-drenched palettes and flowing weaves.", image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800", lifestyle_theme: "summer" },
-    { id: "col-8", name: "Trending in Kampala", slug: "trending-in-kampala", description: "Bold Kampala wax-inspired elements combined with luxury utility statements.", image: "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=800", lifestyle_theme: "kampala" }
-  ],
-  products: [
-    // Campus Drip
-    {
-      id: "prod-1",
-      title: "Classic Vintage Denim Bomber",
-      description: "A perfect fusion of heritage denim craftsmanship and warm, lightweight lining. Accented with brass custom press-studs, elasticized trims, and a slightly oversized drape, ideal for effortless campus styling.",
-      price: 180000,
-      original_price: 240000,
-      rating: 4.8,
-      reviews_count: 14,
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Indigo-Blue", "Vintage-Black"],
-      material: "100% Selvedge Cotton Denim",
-      stock: 12,
-      brand: "Debbie Vintage",
-      is_trending: true,
-      is_new: true,
-      category_id: "cat-4",
-      collection_id: "col-1",
-      image_url: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1544022613-e87ca75a784a?q=80&w=800",
-        "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?q=80&w=800"
-      ]
-    },
-    {
-      id: "prod-2",
-      title: "Oversized Varsity Knit Sweater",
-      description: "An elegant heavyweight knit featuring custom embroidered Debbie athletic lettering. Cozy drop shoulders, textured ribbing, and luxury cotton-merino yarn to elevate your high-school collegiate rotation.",
-      price: 110000,
-      original_price: 145000,
-      rating: 4.9,
-      reviews_count: 8,
-      sizes: ["M", "L", "XL"],
-      colors: ["Forest Green", "Champagne Beige"],
-      material: "70% Merino Wool, 30% Fine Cotton",
-      stock: 18,
-      brand: "Debbie Varsity",
-      is_trending: true,
-      is_new: false,
-      category_id: "cat-1",
-      collection_id: "col-1",
-      image_url: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800",
-        "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=800"
-      ]
-    },
-    // Streetwear
-    {
-      id: "prod-3",
-      title: "Multi-Pocket Utility Cargo Pants",
-      description: "Sculpted military-wear adapted for elite streetwear aesthetics. Multi-functional utility pockets, adjustable drawstrings at the waist and cuffs, built from a highly durable ripstop fabrication that keeps its crisp lines.",
-      price: 135000,
-      original_price: 160000,
-      rating: 4.7,
-      reviews_count: 22,
-      sizes: ["S", "M", "L"],
-      colors: ["Onyx Black", "Sage Green", "Desert Sand"],
-      material: "Reinforced Combat Cotton Ripstop",
-      stock: 15,
-      brand: "Debbie Techwear",
-      is_trending: true,
-      is_new: true,
-      category_id: "cat-2",
-      collection_id: "col-2",
-      image_url: "https://images.unsplash.com/photo-1517462964-21fdcec3f25b?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1517462964-21fdcec3f25b?q=80&w=800",
-        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=800"
-      ]
-    },
-    {
-      id: "prod-4",
-      title: "Couture Retro High-Top Sneakers",
-      description: "Grained Italian calfskin high-top sneakers, complete with a debossed fashion insignia, padded collar support, and structured vulcanized cup-soles. Truly a collector’s masterpiece for premium street style.",
-      price: 280000,
-      original_price: 350000,
-      rating: 5.0,
-      reviews_count: 31,
-      sizes: ["40", "41", "42", "43", "44"],
-      colors: ["Monochrome Cream", "Obsidian Black"],
-      material: "Full-Grain Italian Calf Leather",
-      stock: 6,
-      brand: "Debbie Atelier",
-      is_trending: true,
-      is_new: true,
-      category_id: "cat-3",
-      collection_id: "col-2",
-      image_url: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800",
-        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800"
-      ]
-    },
-    // CEO Mode
-    {
-      id: "prod-5",
-      title: "Double-Breasted Cashmere Blazer",
-      description: "The absolute zenith of executive luxury. Impeccably structured peak lapels, silk-lined interior, and customized matte horn buttons. Cast in mid-weight Mongolian cashmere blend for year-round commanding poise.",
-      price: 350000,
-      original_price: 490000,
-      rating: 4.9,
-      reviews_count: 17,
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Classic Navy", "Charcoal Gray", "Bone White"],
-      material: "70% Cashmere, 30% Mulberry Silk",
-      stock: 8,
-      brand: "Debbie Executive",
-      is_trending: true,
-      is_new: true,
-      category_id: "cat-4",
-      collection_id: "col-4",
-      image_url: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800",
-        "https://images.unsplash.com/photo-1548883354-7622d03aca27?q=80&w=800"
-      ]
-    },
-    {
-      id: "prod-6",
-      title: "Slim Pleated Tailored Trousers",
-      description: "Sharply pleated wool-blend trousers featuring side-adjusters for a bespoke fit. Seamless slash pockets, silk crotch lining, and a gentle taper that creates an exceptionally elongated, powerful profile.",
-      price: 165000,
-      original_price: 195000,
-      rating: 4.6,
-      reviews_count: 11,
-      sizes: ["M", "L", "XL"],
-      colors: ["Midnight Obsidian", "Sandstone", "Taupe"],
-      material: "80% Virgin Wool, 18% Silk, 2% Elastane",
-      stock: 14,
-      brand: "Debbie Executive",
-      is_trending: false,
-      is_new: false,
-      category_id: "cat-2",
-      collection_id: "col-4",
-      image_url: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=800"
-      ]
-    },
-    // Date Night & Luxury
-    {
-      id: "prod-7",
-      title: "Satin Draped Muse Back Midi Dress",
-      description: "An elegant draped design with delicate spaghetti straps and a low criss-cross back detail. Built from heavy, premium satin that pools and flows beautifully around the ankle with every elegant step.",
-      price: 210000,
-      original_price: 280000,
-      rating: 5.0,
-      reviews_count: 19,
-      sizes: ["XS", "S", "M", "L"],
-      colors: ["Emerald Shimmer", "Ruby Crimson", "Champagne"],
-      material: "100% Heavy Mulberry Satin Silk",
-      stock: 5,
-      brand: "Debbie Atelier",
-      is_trending: true,
-      is_new: true,
-      category_id: "cat-4",
-      collection_id: "col-5",
-      image_url: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800",
-        "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=800"
-      ]
-    },
-    {
-      id: "prod-8",
-      title: "Italian Silk Trim Blazer Suit",
-      description: "An incredibly tailored, ultra-contemporary tuxedo jacket featuring peak grosgrain lapels. Hand-stitched detailing, functional surgeon's cuffs, and a sleek silhouette to command attention.",
-      price: 390000,
-      original_price: 490000,
-      rating: 4.9,
-      reviews_count: 9,
-      sizes: ["S", "M", "L"],
-      colors: ["Classic Black"],
-      material: "90% Italian Wool, 10% Premium Mulberry Silk Trim",
-      stock: 4,
-      brand: "Debbie Couture",
-      is_trending: true,
-      is_new: true,
-      category_id: "cat-4",
-      collection_id: "col-5",
-      image_url: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800"
-      ]
-    },
-    // Weekend & Summer
-    {
-      id: "prod-9",
-      title: "Relaxed Flat-Knit Lounge Hooded Set",
-      description: "The height of high-end off-duty comfort. Beautiful plush knitted matching hoodie and shorts, presenting a supremely soft texture that breathes beautifully for cozy Sundays or weekend retreats.",
-      price: 145000,
-      original_price: 195000,
-      rating: 4.8,
-      reviews_count: 14,
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Oatmeal Heather", "Powder Blue"],
-      material: "85% Pima Cotton, 15% Soft Cashmere",
-      stock: 12,
-      brand: "Debbie Leisure",
-      is_trending: false,
-      is_new: false,
-      category_id: "cat-1",
-      collection_id: "col-3",
-      image_url: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800",
-        "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=800"
-      ]
-    },
-    {
-      id: "prod-10",
-      title: "Bohemian Tiered Linen Maxi Skirt",
-      description: "An airy multi-tiered skirt that defines sunset romance. Elasticized waist, delicate shell buttons, and a sweeping fluid volume made from organic lightweight flax-linen.",
-      price: 95000,
-      original_price: 130000,
-      rating: 4.7,
-      reviews_count: 6,
-      sizes: ["XS", "S", "M", "L"],
-      colors: ["Flax Ecru", "Soft Peach"],
-      material: "100% French Flax linen",
-      stock: 20,
-      brand: "Debbie Resort",
-      is_trending: false,
-      is_new: true,
-      category_id: "cat-4",
-      collection_id: "col-7",
-      image_url: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800"
-      ]
-    },
-    // Trending In Kampala & Accessories
-    {
-      id: "prod-11",
-      title: "Wax-Accented Premium Kimono Duster",
-      description: "An elegant open duster showcasing premium hand-pressed African wax-inspired print contrasts on luxurious flowing linen. Perfect for layering and adding a high-fashion, deeply artistic Kampala vibe to any neutral look.",
-      price: 190000,
-      original_price: 250000,
-      rating: 4.9,
-      reviews_count: 24,
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Marigold Wax", "Indigo Wax"],
-      material: "60% Silk Rayon, 40% Organic Flax Linen",
-      stock: 7,
-      brand: "Debbie Heritage",
-      is_trending: true,
-      is_new: true,
-      category_id: "cat-1",
-      collection_id: "col-8",
-      image_url: "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=800",
-        "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=800"
-      ]
-    },
-    {
-      id: "prod-12",
-      title: "Artisanal Leather Saddle Bag",
-      description: "Crafted by hand using structural vegetable-tanned leather, minimal metal studs, and hand-stained edges. Perfect size for essentials, styled to transition seamlessly from CEO meetings to Kampala nights.",
-      price: 230000,
-      original_price: 310000,
-      rating: 4.9,
-      reviews_count: 18,
-      sizes: ["One Size"],
-      colors: ["Cognac Tan", "Noir Pitch"],
-      material: "Vegetable-Tanned Cowhide Leather",
-      stock: 10,
-      brand: "Debbie Leatherware",
-      is_trending: true,
-      is_new: false,
-      category_id: "cat-3",
-      collection_id: "col-8",
-      image_url: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800",
-      images: [
-        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800"
-      ]
-    }
-  ],
+  categories: [],
+  collections: [],
+  products: [],
   orders: [],
   order_items: [],
-  reviews: [
-    { id: "rev-1", product_id: "prod-7", reviewer_name: "Brenda K.", rating: 5, comment: "Absolutely breathtaking. The silk feels heavy and luxurious. The perfect date night dress!", created_at: new Date(Date.now() - 3*24*60*60*1000).toISOString() },
-    { id: "rev-2", product_id: "prod-3", reviewer_name: "Musa O.", rating: 5, comment: "Best cargo pants I have owned. The cotton ripstop holds its form perfect in Kampala.", created_at: new Date(Date.now() - 5*24*60*60*1000).toISOString() },
-    { id: "rev-3", product_id: "prod-5", reviewer_name: "Patricia L.", rating: 4, comment: "Beautiful double-breasted shape, very high quality finish. It fits great although it is slightly longer than expected.", created_at: new Date(Date.now() - 10*24*60*60*1000).toISOString() }
-  ],
-  banners: [
-    { id: "ban-1", title: "Couture Awakening", subtitle: "Sophisticated styling crafted for modern African lifestyle expression.", image_url: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1600", link: "/catalog", type: "homepage" },
-    { id: "ban-2", title: "The Executive Muse", subtitle: "Sharp lapels and merino wool to structure your corporate ambition.", image_url: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=1600", link: "/catalog?collection=col-4", type: "promotional" }
-  ],
+  reviews: [],
+  banners: [],
   newsletter_subscribers: [],
   posts: [],
   promotions: [],
@@ -404,85 +105,17 @@ function loadDb() {
     
     // Assure initialization of lookbook posts
     if (!db.posts) {
-      db.posts = [
-        {
-          id: "post-1",
-          title: "Campus Drip Editorial v1",
-          caption: "Matching crop sweaters and vintage denim layers. Perfect balance of utility and street comfort under Kampala morning skies.",
-          images: [
-            "https://images.unsplash.com/photo-1544022613-e87ca75a784a?q=80&w=800",
-            "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800"
-          ],
-          tags: ["Denim", "Varsity", "Campus"],
-          collection_id: "col-1",
-          is_featured: true,
-          status: "published",
-          created_at: new Date().toISOString()
-        },
-        {
-          id: "post-2",
-          title: "CEO Command Style Showcase",
-          caption: "Structured wool blazers and side-adjustable trousers. Dress like a leader, execute like an artist in Acacia Hill chambers.",
-          images: [
-            "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800",
-            "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=800"
-          ],
-          tags: ["Corporate", "Cashmere", "Tailored"],
-          collection_id: "col-4",
-          is_featured: true,
-          status: "published",
-          created_at: new Date().toISOString()
-        },
-        {
-          id: "post-3",
-          title: "Satin Elegance in Kololo",
-          caption: "Sliding satin silhouettes backdraped gracefully. An evening dress built to pool around heels.",
-          images: [
-            "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800"
-          ],
-          tags: ["Satin", "Romantic", "DateNight"],
-          collection_id: "col-5",
-          is_featured: true,
-          status: "published",
-          created_at: new Date().toISOString()
-        }
-      ];
+      db.posts = [];
     }
 
     // Assure initialization of promotions
     if (!db.promotions) {
-      db.promotions = [
-        {
-          id: "promo-1",
-          code: "DEBBIEGOLD15",
-          discount: 15,
-          is_flash: false,
-          is_active: true,
-          products: ["prod-1", "prod-7"],
-          start_date: "2026-06-01",
-          end_date: "2026-12-31"
-        },
-        {
-          id: "promo-2",
-          code: "KAMPALA5",
-          discount: 5,
-          is_flash: true,
-          is_active: true,
-          products: ["prod-11"],
-          start_date: "2026-06-05",
-          end_date: "2026-06-15"
-        }
-      ];
+      db.promotions = [];
     }
 
     // Assure initialization of media files
     if (!db.media) {
-      db.media = [
-        { id: "med-1", name: "Autumn Trench Banner", url: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800", date: "2026-06-01" },
-        { id: "med-2", name: "Corporate Command Portrait", url: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800", date: "2026-06-01" },
-        { id: "med-3", name: "Varsity Street Scene", url: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800", date: "2026-06-02" },
-        { id: "med-4", name: "Tuxedo Details Close-Up", url: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800", date: "2026-06-03" }
-      ];
+      db.media = [];
     }
 
     // Assure initialization of boutique configuration settings
@@ -534,6 +167,91 @@ function getGeminiClient(): GoogleGenAI {
     });
   }
   return aiClient;
+}
+
+function extractJson(text: string): any {
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    // Attempt to extract JSON from markdown block or raw text
+    const startIdx = text.indexOf('{');
+    const endIdx = text.lastIndexOf('}');
+    if (startIdx !== -1 && endIdx !== -1) {
+      const jsonStr = text.substring(startIdx, endIdx + 1);
+      return JSON.parse(jsonStr);
+    }
+    throw e;
+  }
+}
+
+async function generateWithHuggingFace(prompt: string): Promise<any> {
+  const hfToken = process.env.HF_TOKEN || process.env.HUGGINGFACE_API_KEY;
+  if (!hfToken) {
+    throw new Error("No Hugging Face token configured in environment variables (HF_TOKEN or HUGGINGFACE_API_KEY)");
+  }
+
+  const models = [
+    "Qwen/Qwen2.5-72B-Instruct",
+    "meta-llama/Meta-Llama-3-8B-Instruct",
+    "mistralai/Mixtral-8x7B-Instruct-v0.1"
+  ];
+
+  let lastError: any = null;
+  for (const model of models) {
+    try {
+      console.log(`[HUGGING FACE] Trying model: ${model}...`);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+      try {
+        const response = await fetch(`https://api-inference.huggingface.co/models/${model}/v1/chat/completions`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${hfToken}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              {
+                role: "system",
+                content: "You are a master luxury stylist. You must respond with raw, valid JSON only. Do not include markdown code block formatting or any explanation outside the JSON."
+              },
+              {
+                role: "user",
+                content: prompt
+              }
+            ],
+            temperature: 0.7,
+            max_tokens: 1200
+          }),
+          signal: controller.signal
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Hugging Face API error (${response.status}): ${errText}`);
+        }
+
+        const result = await response.json() as any;
+        const content = result.choices?.[0]?.message?.content;
+        if (!content) {
+          throw new Error("Empty response from Hugging Face");
+        }
+
+        console.log(`[HUGGING FACE] Successfully generated recommendation using ${model}`);
+        return extractJson(content);
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    } catch (err: any) {
+      console.warn(`[HUGGING FACE] Model ${model} failed:`, err.message || err);
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error("All Hugging Face models failed");
 }
 
 // -------------------------------------------------------------
@@ -1026,6 +744,69 @@ app.post("/api/admin/login", (req, res) => {
   });
 });
 
+// ADMIN ACCOUNTS MANAGEMENT API
+app.get("/api/admin/accounts", (req, res) => {
+  res.json((db.admins || []).map(a => ({
+    id: a.id,
+    username: a.username,
+    name: a.name,
+    email: a.email,
+    created_at: a.created_at || new Date().toISOString()
+  })));
+});
+
+app.post("/api/admin/accounts", (req, res) => {
+  const { username, password, name, email } = req.body;
+  if (!username || !password || !name || !email) {
+    return res.status(400).json({ error: "All account fields are required (username, password, name, email)" });
+  }
+
+  const exists = (db.admins || []).some(a => a.username.toLowerCase() === username.toLowerCase());
+  if (exists) {
+    return res.status(400).json({ error: `Username '${username}' is already in use.` });
+  }
+
+  const newAdmin = {
+    id: `admin-${Date.now()}`,
+    username,
+    password_hash: password,
+    name,
+    email,
+    created_at: new Date().toISOString()
+  };
+
+  if (!db.admins) {
+    db.admins = [];
+  }
+  db.admins.push(newAdmin);
+  saveDb();
+
+  res.json({
+    id: newAdmin.id,
+    username: newAdmin.username,
+    name: newAdmin.name,
+    email: newAdmin.email,
+    created_at: newAdmin.created_at
+  });
+});
+
+app.delete("/api/admin/accounts/:id", (req, res) => {
+  const { id } = req.params;
+  const adminToDelete = (db.admins || []).find(a => a.id === id);
+  if (!adminToDelete) {
+    return res.status(404).json({ error: "Administrator account not found." });
+  }
+
+  if (adminToDelete.username === "admin") {
+    return res.status(400).json({ error: "The primary 'admin' account cannot be deleted." });
+  }
+
+  db.admins = (db.admins || []).filter(a => a.id !== id);
+  saveDb();
+
+  res.json({ success: true, message: "Administrator account removed successfully." });
+});
+
 // ANALYTICS & DASHBOARD METRICS
 app.get("/api/admin/dashboard-stats", (req, res) => {
   const totalOrders = db.orders.length;
@@ -1191,8 +972,23 @@ Important details:
     } else {
       throw new Error("No Gemini API key configured");
     }
-  } catch (error) {
-    console.error("[GEMINI STYLIST EXCEPTION] Falling back to high-fidelity rule-based stylist engine:", error);
+  } catch (error: any) {
+    console.warn(`[GEMINI STYLIST EXCEPTION] Gemini failed or returned an error (${error.message || error}). Checking Hugging Face fallback...`);
+    
+    const hfToken = process.env.HF_TOKEN || process.env.HUGGINGFACE_API_KEY;
+    if (hfToken) {
+      try {
+        console.log("[HUGGING FACE FALLBACK] Dialing Hugging Face Serverless API...");
+        const parsedRecommendation = await generateWithHuggingFace(prompt);
+        return res.json(parsedRecommendation);
+      } catch (hfError: any) {
+        console.error("[HUGGING FACE EXCEPTION] Hugging Face fallback failed as well:", hfError.message || hfError);
+      }
+    } else {
+      console.log("[INFO] No Hugging Face token configured (HF_TOKEN or HUGGINGFACE_API_KEY). Skipping HF fallback.");
+    }
+
+    console.log("[STYLING FALLBACK] Executing rule-based stylist engine...");
     
     // Intelligent rules matching based on input style/gender/occasion
     let matching_product_ids: string[] = [];

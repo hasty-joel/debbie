@@ -100,22 +100,22 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
     <div className="space-y-6 animate-fade-in" id="admin-customers-tab">
       
       {/* Search and control bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-zinc-950 p-4 border border-zinc-150 dark:border-zinc-850 rounded">
-        <div className="relative w-full md:w-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-zinc-950 p-4 border border-zinc-150 dark:border-zinc-850 rounded">
+        <div className="relative w-full sm:max-w-md">
           <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500 pointer-events-none" />
           <input 
             type="text" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by name, phone, email, or physical location..."
-            className="pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-90 w-72 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold dark:text-white rounded"
+            className="pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-90 w-full text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold dark:text-white rounded"
           />
         </div>
 
         <button 
           onClick={handleExportCSV}
           disabled={exporting || filteredCustomers.length === 0}
-          className="flex items-center space-x-2 px-5 py-2.5 bg-zinc-950 text-white hover:bg-luxury-gold transition-colors text-xxs font-bold tracking-widest font-mono uppercase rounded disabled:opacity-55 cursor-pointer border-none"
+          className="flex items-center justify-center space-x-2 px-5 py-2.5 bg-zinc-950 text-white hover:bg-luxury-gold transition-colors text-xxs font-bold tracking-widest font-mono uppercase rounded disabled:opacity-55 cursor-pointer border-none w-full sm:w-auto shrink-0 shadow-xs"
         >
           <Download className="h-4 w-4 shrink-0" />
           <span>{exporting ? 'Compiling Log...' : 'Export Buyer Records (CSV)'}</span>
@@ -130,16 +130,16 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
       )}
 
       {/* Grid summary layouts */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Customer Buyers database lists */}
-        <div className="bg-white dark:bg-zinc-950 p-6 border border-zinc-150 dark:border-zinc-850 rounded md:col-span-2 space-y-4">
+        <div className="bg-white dark:bg-zinc-950 p-6 border border-zinc-150 dark:border-zinc-850 rounded lg:col-span-2 space-y-4 shadow-2xs">
           <div className="border-b border-zinc-100 dark:border-zinc-900 pb-3">
             <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-900 dark:text-white font-display">Elite Buyer Index</h3>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xxs text-zinc-550">
+            <table className="w-full min-w-[600px] text-left text-xxs text-zinc-550">
               <thead>
                 <tr className="border-b border-zinc-150 dark:border-zinc-850 pb-2 text-zinc-400 font-mono uppercase font-bold">
                   <th className="py-2.5">Buyer</th>

@@ -133,7 +133,14 @@ export const AdminCategoriesCollectionsTab: React.FC<AdminCategoriesCollectionsT
                 Choose from Library
               </button>
             </div>
-            <input type="text" value={colImg} onChange={(e) => setColImg(e.target.value)} placeholder="https://images.unsplash.com/photo-1..." className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold text-xxs font-mono" />
+            <input 
+              type="text" 
+              readOnly 
+              value={colImg} 
+              onClick={() => setPickerTarget('col')}
+              placeholder="Click 'Choose from Library' to select..." 
+              className="w-full bg-zinc-100 dark:bg-zinc-900 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold text-xxs font-mono cursor-pointer" 
+            />
           </div>
 
           <div className="space-y-1">
@@ -201,7 +208,14 @@ export const AdminCategoriesCollectionsTab: React.FC<AdminCategoriesCollectionsT
                 Choose from Library
               </button>
             </div>
-            <input type="text" value={catImg} onChange={(e) => setCatImg(e.target.value)} placeholder="https://images.unsplash.com/photo-2..." className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold text-xxs font-mono" />
+            <input 
+              type="text" 
+              readOnly 
+              value={catImg} 
+              onClick={() => setPickerTarget('cat')}
+              placeholder="Click 'Choose from Library' to select..." 
+              className="w-full bg-zinc-100 dark:bg-zinc-900 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold text-xxs font-mono cursor-pointer" 
+            />
           </div>
 
           <div className="space-y-1">

@@ -48,6 +48,7 @@ export const AdminHomepageTab: React.FC = () => {
   const [newMediaName, setNewMediaName] = useState('');
   const [newMediaUrl, setNewMediaUrl] = useState('');
   const [mediaError, setMediaError] = useState('');
+  const [homepageUploading, setHomepageUploading] = useState(false);
 
   // Sync draftConfig if server settings refresh
   useEffect(() => {
@@ -224,21 +225,42 @@ export const AdminHomepageTab: React.FC = () => {
   };
 
   // Media library upload helper
-  const handleAddMediaSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMediaError('');
-    if (!newMediaName || !newMediaUrl) {
-      setMediaError('Asset reference name and image secure URL are required.');
+  const handleHomepageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setMediaError('Only image files (JPG, PNG, WEBP, etc.) are allowed.');
       return;
     }
 
-    const success = await createMedia(newMediaName, newMediaUrl);
-    if (success) {
-      setNewMediaName('');
-      setNewMediaUrl('');
-    } else {
-      setMediaError('Failed to catalog asset coordinates with database.');
-    }
+    setHomepageUploading(true);
+    setMediaError('');
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const base64Url = event.target?.result as string;
+      if (!base64Url) {
+        setMediaError('Failed to read file bytes.');
+        setHomepageUploading(false);
+        return;
+      }
+
+      const success = await createMedia(file.name.split('.')[0] || "Uploaded Photo", base64Url);
+      if (success) {
+        setMediaError('');
+      } else {
+        setMediaError('Failed to catalog asset bytes in Media library.');
+      }
+      setHomepageUploading(false);
+    };
+
+    reader.onerror = () => {
+      setMediaError('Error reading local file.');
+      setHomepageUploading(false);
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const selectMediaForInput = (url: string) => {
@@ -1505,46 +1527,28 @@ export const AdminHomepageTab: React.FC = () => {
               </button>
             </div>
 
-            {/* Cataloging form for mock "Upload via Supabase Storage" */}
-            <form onSubmit={handleAddMediaSubmit} className="p-3 bg-zinc-50 dark:bg-zinc-95 border border-zinc-150 dark:border-zinc-800 rounded space-y-3 font-sans text-xs text-zinc-550 leading-normal">
-              <span className="text-[9px] font-mono text-zinc-400 block uppercase font-bold">Catalog New Asset (Supabase Storage Simulation)</span>
+            {/* Quick upload device local file browser */}
+            <div className="p-3.5 bg-zinc-50 dark:bg-zinc-95 border border-dashed border-zinc-200 dark:border-zinc-800 rounded space-y-2 font-sans text-xs text-zinc-550 leading-normal flex flex-col justify-center items-center text-center">
+              <span className="text-[9px] font-mono text-zinc-400 block uppercase font-bold tracking-widest">Quick Import from device gallery</span>
               
-              {mediaError && <p className="text-xxs text-rose-505 italic font-semibold">{mediaError}</p>}
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <span className="text-[8px] font-mono font-bold text-zinc-400 uppercase block">Asset Visual Label Name</span>
-                  <input 
-                    type="text" 
-                    required
-                    value={newMediaName}
-                    onChange={(e) => setNewMediaName(e.target.value)}
-                    placeholder="e.g. Winter Cover Shot" 
-                    className="w-full bg-white dark:bg-zinc-90 border p-2 focus:outline-none focus:border-luxury-gold text-xxs dark:text-white" 
-                  />
-                </div>
-                <div className="space-y-1">
-                  <span className="text-[8px] font-mono font-bold text-zinc-400 uppercase block">Image secure HTTPS URL (Source)</span>
-                  <input 
-                    type="text" 
-                    required
-                    value={newMediaUrl}
-                    onChange={(e) => setNewMediaUrl(e.target.value)}
-                    placeholder="https://images.unsplash.com/photo-..." 
-                    className="w-full bg-white dark:bg-zinc-90 border p-2 focus:outline-none focus:border-luxury-gold text-xxs dark:text-white font-mono" 
-                  />
-                </div>
-              </div>
+              <label className="px-4 py-2 bg-zinc-950 hover:bg-luxury-gold text-white font-mono uppercase text-xxs font-bold tracking-wider rounded border-none cursor-pointer transition-colors inline-flex items-center space-x-1.5 shadow-sm">
+                <RefreshCw className={`h-3.5 w-3.5 shrink-0 ${homepageUploading ? 'animate-spin' : ''}`} />
+                <span>{homepageUploading ? 'Uploading asset...' : 'Browse Local Photos'}</span>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  className="hidden" 
+                  onChange={handleHomepageFileChange}
+                  disabled={homepageUploading}
+                />
+              </label>
 
-              <div className="flex justify-end pt-1">
-                <button 
-                  type="submit" 
-                  className="px-5 py-2 bg-zinc-950 text-white font-mono uppercase text-xxs font-bold tracking-wider hover:bg-luxury-gold border-none rounded cursor-pointer"
-                >
-                  Confirm Upload & Index
-                </button>
-              </div>
-            </form>
+              <span className="text-[10px] text-zinc-400 font-sans">
+                {homepageUploading ? 'Converting image to local database bytes...' : 'Select a JPG, PNG, or WEBP image file from your device gallery'}
+              </span>
+
+              {mediaError && <p className="text-xxs text-rose-500 italic font-semibold">{mediaError}</p>}
+            </div>
 
             {/* List list grid of available media */}
             <div className="space-y-2">

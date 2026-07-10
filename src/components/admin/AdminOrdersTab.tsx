@@ -35,17 +35,17 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
     <div className="space-y-6 animate-fade-in" id="admin-orders-tab">
       
       {/* Control bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-zinc-950 p-4 border border-zinc-150 dark:border-zinc-850 rounded">
-        <div className="flex flex-wrap items-center gap-3 text-xs w-full md:w-auto">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white dark:bg-zinc-950 p-4 border border-zinc-150 dark:border-zinc-850 rounded">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs w-full lg:w-auto flex-1">
           {/* Search box */}
-          <div className="relative">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500 pointer-events-none" />
             <input 
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by ID, name, or phone..."
-              className="pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-90 w-64 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold dark:text-white rounded"
+              className="pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-90 w-full text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold dark:text-white rounded"
             />
           </div>
 
@@ -53,7 +53,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
           <select 
             value={statusFilter} 
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 bg-zinc-50 dark:bg-zinc-90 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 rounded"
+            className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-90 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 rounded dark:text-white"
           >
             <option value="">All Logistics Statuses</option>
             <option value="pending">Review Pending</option>
@@ -63,7 +63,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
           </select>
         </div>
 
-        <span className="text-[10px] text-zinc-400 font-mono">
+        <span className="text-[10px] text-zinc-400 font-mono text-right shrink-0">
           Tracking {filteredOrders.length} pipeline items
         </span>
       </div>

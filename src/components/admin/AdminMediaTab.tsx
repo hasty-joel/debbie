@@ -149,7 +149,7 @@ export const AdminMediaTab: React.FC<AdminMediaTabProps> = ({
   );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in" id="admin-media-tab">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in" id="admin-media-tab">
       
       {/* 1. UPLOAD AND INGEST PANEL */}
       <div className="bg-white dark:bg-zinc-950 p-6 rounded border border-zinc-150 dark:border-zinc-850 space-y-6 height-fit">
@@ -200,26 +200,23 @@ export const AdminMediaTab: React.FC<AdminMediaTabProps> = ({
           </div>
 
           <div className="space-y-1">
-            <div className="flex justify-between items-center">
-              <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Asset absolute Link / Data URI</span>
-              {uploadUrl.startsWith('data:') && (
+            <span className="text-xxs font-bold text-zinc-405 uppercase tracking-wider block font-mono">Device Image Status</span>
+            {uploadUrl ? (
+              <div className="p-3 bg-green-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 rounded flex justify-between items-center">
+                <span className="text-xxs font-semibold text-emerald-600 dark:text-emerald-500 font-mono">✓ Loaded from device gallery</span>
                 <button 
                   type="button" 
                   onClick={() => { setUploadUrl(''); setUploadName(''); }} 
-                  className="text-[9px] font-mono text-rose-500 hover:underline border-none bg-transparent cursor-pointer"
+                  className="text-[10px] font-mono text-rose-500 hover:underline border-none bg-transparent cursor-pointer font-bold"
                 >
-                  Clear Upload
+                  Clear Selection
                 </button>
-              )}
-            </div>
-            <input 
-              type="text" 
-              required 
-              value={uploadUrl} 
-              onChange={(e) => setUploadUrl(e.target.value)} 
-              placeholder="https://images.unsplash.com/photo-... or browser upload" 
-              className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2.5 focus:outline-none dark:text-white border-zinc-200 dark:border-zinc-800 text-xxs font-mono" 
-            />
+              </div>
+            ) : (
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-900/50 border border-dashed border-zinc-200 dark:border-zinc-800 rounded text-center text-xxs text-zinc-400 italic">
+                No local image file staged yet. Please drop an image or use "Click to Browse" above.
+              </div>
+            )}
           </div>
 
           {uploadUrl && (
@@ -241,7 +238,7 @@ export const AdminMediaTab: React.FC<AdminMediaTabProps> = ({
       </div>
 
       {/* 2. MEDIA CARDS LIBRARY AND SEARCH */}
-      <div className="bg-white dark:bg-zinc-950 p-6 rounded border border-zinc-150 dark:border-zinc-850 md:col-span-2 space-y-4">
+      <div className="bg-white dark:bg-zinc-950 p-6 rounded border border-zinc-150 dark:border-zinc-850 lg:col-span-2 space-y-4">
         
         {/* Header and Search */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-3 gap-3">

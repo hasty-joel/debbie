@@ -75,7 +75,7 @@ export const AdminDashboardTab: React.FC<AdminDashboardTabProps> = ({
       </div>
 
       {/* Grid statistics highlights */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((card, i) => {
           const Icon = card.icon;
           return (
@@ -100,9 +100,9 @@ export const AdminDashboardTab: React.FC<AdminDashboardTabProps> = ({
       </div>
 
       {/* Internal Analytics charts */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Sales trend bar chart visual placeholder */}
-        <div className="bg-white dark:bg-zinc-950 p-6 rounded border border-zinc-150 dark:border-zinc-850 md:col-span-2 space-y-4">
+        <div className="bg-white dark:bg-zinc-950 p-6 rounded border border-zinc-150 dark:border-zinc-850 lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
             <h3 className="text-xxs font-mono uppercase tracking-widest font-bold text-zinc-500">Workspace Sales Trends</h3>
             <span className="text-xxxxs bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2 py-0.5 rounded uppercase font-bold">Live Synced</span>
@@ -198,7 +198,7 @@ export const AdminDashboardTab: React.FC<AdminDashboardTabProps> = ({
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xxs text-zinc-550 space-y-2">
+          <table className="w-full min-w-[600px] text-left text-xxs text-zinc-550 space-y-2">
             <thead>
               <tr className="border-b border-zinc-100 dark:border-zinc-900 text-zinc-400 font-mono uppercase font-bold">
                 <th className="py-2.5">ID Ref</th>

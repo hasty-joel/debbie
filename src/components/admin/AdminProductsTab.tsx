@@ -51,6 +51,7 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
   // Form errors
   const [errorMsg, setErrorMsg] = useState('');
   const [mediaSelectorOpen, setMediaSelectorOpen] = useState(false);
+  const [mediaTarget, setMediaTarget] = useState<'primary' | 'secondary'>('primary');
 
   const handleOpenCreateForm = () => {
     setSelectedProduct(null);
@@ -172,17 +173,17 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
     <div className="space-y-6 animate-fade-in" id="admin-products-tab">
       
       {/* Search and control bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-zinc-950 p-4 border border-zinc-150 dark:border-zinc-850 rounded">
-        <div className="flex flex-wrap items-center gap-3 text-xs w-full md:w-auto">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white dark:bg-zinc-950 p-4 border border-zinc-150 dark:border-zinc-850 rounded">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs w-full lg:w-auto flex-1">
           {/* Search box */}
-          <div className="relative">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500 pointer-events-none" />
             <input 
               type="text" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search products..."
-              className="pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-90 w-52 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold dark:text-white rounded"
+              className="pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-90 w-full text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 focus:border-luxury-gold dark:text-white rounded"
             />
           </div>
 
@@ -190,7 +191,7 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
           <select 
             value={catFilter} 
             onChange={(e) => setCatFilter(e.target.value)}
-            className="px-3 py-2 bg-zinc-50 dark:bg-zinc-90 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 rounded"
+            className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-90 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 rounded dark:text-white"
           >
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -200,7 +201,7 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
           <select 
             value={colFilter} 
             onChange={(e) => setColFilter(e.target.value)}
-            className="px-3 py-2 bg-zinc-50 dark:bg-zinc-90 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 rounded"
+            className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-90 text-xxs font-mono focus:outline-none border border-zinc-200 dark:border-zinc-800 rounded dark:text-white"
           >
             <option value="">All Collections</option>
             {collections.map(co => <option key={co.id} value={co.id}>{co.name}</option>)}
@@ -209,10 +210,10 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
 
         <button 
           onClick={handleOpenCreateForm}
-          className="flex items-center space-x-1.5 px-5 py-2.5 bg-zinc-950 text-white hover:bg-luxury-gold transition-colors text-xxs font-bold tracking-widest font-mono uppercase rounded cursor-pointer border-none"
+          className="flex items-center justify-center space-x-1.5 px-5 py-2.5 bg-zinc-950 text-white hover:bg-luxury-gold transition-colors text-xxs font-bold tracking-widest font-mono uppercase rounded cursor-pointer border-none w-full lg:w-auto shrink-0 shadow-xs"
           id="btn-add-product"
         >
-          <Plus className="h-4 w-4 shrink-0" />
+          <Plus className="h-3.5 w-3.5 shrink-0" />
           <span>Add Product</span>
         </button>
       </div>
@@ -274,18 +275,53 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
                   <span className="text-xxs font-bold text-zinc-455 uppercase tracking-wider block font-mono">Primary Image thumbnail URL</span>
                   <button 
                     type="button" 
-                    onClick={() => setMediaSelectorOpen(true)}
+                    onClick={() => { setMediaTarget('primary'); setMediaSelectorOpen(true); }}
                     className="text-[9px] font-mono font-bold text-luxury-gold hover:underline border-none bg-transparent cursor-pointer"
                   >
                     Choose from Library
                   </button>
                 </div>
-                <input type="text" required value={imgUrl} onChange={(e) => setImgUrl(e.target.value)} placeholder="https://images.unsplash.com/photo-..." className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2 rounded focus:outline-none focus:border-luxury-gold dark:text-white border-zinc-200 dark:border-zinc-800" />
+                <input 
+                  type="text" 
+                  required 
+                  readOnly 
+                  value={imgUrl} 
+                  onClick={() => { setMediaTarget('primary'); setMediaSelectorOpen(true); }}
+                  placeholder="Click to select image from media library..." 
+                  className="w-full bg-zinc-100 dark:bg-zinc-900 border p-2 rounded focus:outline-none focus:border-luxury-gold dark:text-white border-zinc-200 dark:border-zinc-800 cursor-pointer text-xs" 
+                />
               </div>
 
               <div className="space-y-1">
-                <span className="text-xxs font-bold text-zinc-500 uppercase tracking-wider block font-mono">Secondary Images Gallery URLs (comma separated)</span>
-                <input type="text" value={secondaryImgs} onChange={(e) => setSecondaryImgs(e.target.value)} placeholder="url1, url2, url3" className="w-full bg-zinc-50 dark:bg-zinc-90 border p-2 rounded focus:outline-none focus:border-luxury-gold dark:text-white border-zinc-200 dark:border-zinc-800 text-xxs font-mono" />
+                <div className="flex justify-between items-center">
+                  <span className="text-xxs font-bold text-zinc-500 uppercase tracking-wider block font-mono">Secondary Images Gallery URLs</span>
+                  <div className="flex space-x-2">
+                    <button 
+                      type="button" 
+                      onClick={() => { setMediaTarget('secondary'); setMediaSelectorOpen(true); }}
+                      className="text-[9px] font-mono font-bold text-luxury-gold hover:underline border-none bg-transparent cursor-pointer"
+                    >
+                      + Add from Library
+                    </button>
+                    {secondaryImgs && (
+                      <button 
+                        type="button" 
+                        onClick={() => setSecondaryImgs('')}
+                        className="text-[9px] font-mono font-bold text-rose-500 hover:underline border-none bg-transparent cursor-pointer"
+                      >
+                        Clear Gallery
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={secondaryImgs} 
+                  onClick={() => { setMediaTarget('secondary'); setMediaSelectorOpen(true); }}
+                  placeholder="Click to append additional photos from media library..." 
+                  className="w-full bg-zinc-100 dark:bg-zinc-900 border p-2 rounded focus:outline-none focus:border-luxury-gold dark:text-white border-zinc-200 dark:border-zinc-800 text-xxs font-mono cursor-pointer" 
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -394,9 +430,9 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
       )}
 
       {/* Products table list */}
-      <div className="bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-850 rounded p-6">
+      <div className="bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-850 rounded p-6 shadow-xs">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xxs text-zinc-550">
+          <table className="w-full min-w-[800px] text-left text-xxs text-zinc-550">
             <thead>
               <tr className="border-b border-zinc-150 dark:border-zinc-850 text-zinc-400 uppercase tracking-wider font-mono font-bold">
                 <th className="py-3">Silhouette</th>
@@ -472,7 +508,13 @@ export const AdminProductsTab: React.FC<AdminProductsTabProps> = ({
       <MediaSelectorModal 
         isOpen={mediaSelectorOpen} 
         onClose={() => setMediaSelectorOpen(false)} 
-        onSelect={(url) => setImgUrl(url)} 
+        onSelect={(url) => {
+          if (mediaTarget === 'primary') {
+            setImgUrl(url);
+          } else {
+            setSecondaryImgs(prev => prev ? `${prev}, ${url}` : url);
+          }
+        }} 
       />
 
     </div>
